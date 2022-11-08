@@ -1,0 +1,96 @@
+﻿@inherits PrioridadesComponentBase  
+@page "/prioridades"
+<h3>Prioridades Personales  (@if(prioridades != null){ @prioridades.Count().ToString(); })</h3>
+    <button @onclick="@Add" class="btn btn-success">Adiciona Prioridad</button>
+@if (mode == MODE.Add)
+{
+    // HECHO : 30-Dic-2021 12-56-pm : Insertando entrada de creación : 
+    <EditForm  EditContext="PrioridadContext" OnSubmit="@Insert">
+    <DataAnnotationsValidator />
+        <table class="col-sm-12 col-md-12 col-lg-12">
+            <tr><td colspan=3>Crear</td></tr>
+            <tr><td colspan=3>
+                    <InputText placeholder="Nombre" @bind-Value="@Prio.Nombre" class="form-control" />
+                        <ValidationMessage For="@(()=>Prio.Nombre)" />
+                </td>
+                </tr>
+            <tr><td colspan=3>
+                    <InputNumber placeholder="Orden" @bind-Value="@Prio.Orden" class="form-control" />
+                        <ValidationMessage For="@(()=>Prio.Orden)" />
+                    <button type="submit" class="btn btn-danger form-control">Adicionar</button>
+                    <button type="button" class="btn btn-dark form-control" @onclick="@(() => Listar())" >Listado</button>
+                </td>
+                </tr>
+        </table>
+    </EditForm>
+} 
+@if (mode == MODE.EditDelete)
+{
+    // TODO : 30-Dic-2021 1-31-pm : EDITANDO Prioridad
+    // HECHO : 30-Dic-2021 5-20-pm : Se edita prioridad  
+    <EditForm EditContext="PrioridadEditContext" OnSubmit="@Update">
+    <DataAnnotationsValidator />
+        <table class="col-sm-12 col-md-12 col-lg-12">
+            <tr><td class="h2 text-center" colspan=3>Crear</td></tr>
+            <tr><td colspan=3>
+                    <InputNumber hidden @bind-Value="@Prio2.Id" />
+                    <InputText placeholder="Nombre" @bind-Value="@Prio2.Nombre" class="form-control" />
+                        <ValidationMessage For="@(()=>Prio2.Nombre)" />
+                </td>
+                </tr>
+            <tr><td colspan=3>
+                    <InputNumber placeholder="Orden" @bind-Value="@Prio2.Orden" class="form-control" />
+                        <ValidationMessage For="@(()=>Prio2.Orden)" />
+                    <button type="submit" class="btn btn-info form-control">Modificar</button>
+                    <button @onclick="@(() => Delete(Prio2.Id.ToString()))" value="borrar" class="btn btn-danger form-control">Borrar</button>
+                    <button type="button" class="btn btn-dark form-control" @onclick="@(() => Listar())" >Listado</button>
+
+                </td>
+                </tr>
+        </table>
+    </EditForm>
+} 
+@if(mode == MODE.List) {
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Orden</th>
+        <th>#Temas</th>
+        <th>#Citas</th>
+@*        <th>#Tareas</th>
+*@    </tr>
+    </thead>
+    <tbody>
+
+        @if (prioridades != null)
+            {
+                @foreach (var item in prioridades)
+                {
+                 <tr @onclick="@(() => Show(item.Id.ToString()))">
+                           <td>
+                                @item.Nombre
+                            </td>
+                            <td>
+                                <span class="badge bg-warning rounded-pill">@item.Orden</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-primary rounded-pill">@temas.Where(x => x.PrioridadId == item.Id).Count()</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-primary rounded-pill">@citas.Where(x => x.PrioridadId == item.Id).Count()</span>
+                            </td>
+@*                            <td>
+                                <span class="badge bg-primary rounded-pill">@tareas.Where(x => (x.Temas.PrioridadId == item.Id)).Count()</span>
+                            </td>
+*@                </tr>
+                }
+
+            }
+            else
+            {
+                <div>No hay prioridades cargadas</div>
+            }
+    </tbody>
+</table>
+}

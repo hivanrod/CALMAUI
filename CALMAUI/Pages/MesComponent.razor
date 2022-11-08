@@ -1,0 +1,97 @@
+﻿@inherits MesComponentBase
+<PageTitle>Mes - Calendario</PageTitle>
+<h3 class="h3 text-center" style="cursor:pointer" @onclick="@(() => loadCitasFecha(hoy))">Vista Mes - Mes Actual</h3>
+
+<div class="card">
+        <div class="card-header">Now:@DateTime.Now.Date - @fecha
+        <div class="h2 text-center" >fecha:@Convert.ToDateTime(fecha).Date
+            <div class="float-start" style="cursor:pointer" @onclick="@(() => loadCitasFecha(fecha1))">@("<<")</div>
+            @Mes[mes].ToString() + " " + @diasemanainicia
+            @if (Convert.ToDateTime(fecha).Date == DateTime.Now.Date) { 
+                <strong>@(" <<" + @DateTime.Now.ToShortTimeString() + ">>")</strong>
+            }
+            <div class="float-end" style="cursor:pointer" @onclick="@(() => loadCitasFecha(fecha2))">@(">>")</div>    
+        </div>
+    </div>
+
+     <div class="col-12 text-center">@Mes</div>
+     <div class="row">
+         <div class="col-2 text-center">&nbsp;</div>
+                <div class="col-8 text-center">
+                <div class="row">
+                    <div class="col-1 text-center">D</div>
+                    <div class="col-1 text-center">L</div>
+                    <div class="col-1 text-center">M</div>
+                    <div class="col-1 text-center">M</div>
+                    <div class="col-1 text-center">J</div>
+                    <div class="col-1 text-center">V</div>
+                    <div class="col-1 text-center">S</div>
+                    <div class="col-1 text-center">&nbsp;</div>
+                </div>
+                </div>
+         <div class="col-2 text-center">&nbsp;</div>
+     </div>
+     @for (var i = 1; i <= 5; i++)
+    {
+        if (i == 1)
+        {
+            <div class="row">
+             <div class="col-2 bg-dark text-center">&nbsp;</div>
+                    <div class="col-8 text-center">
+                                <div class="row">
+                                        @for (var j = 1; j <= 7; j++)
+                                        {
+                                                @if (diasemanainicia > j)
+                                                {
+                                                    <div class="col-1">&nbsp;</div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-1 text-center">@j</div>
+                                                }
+                                       } 
+                                    <div class="col-1 text-center">&nbsp;</div>
+                                </div>
+                    </div>
+                 <div class="col-2 text-center">&nbsp;</div>
+             </div>
+            
+            
+        }
+        if (i > 1 && i < 5)
+        {
+            
+                    <div class="row">
+                 <div class="col-2 text-center">&nbsp;</div>
+                        <div class="col-8 text-center">
+                        <div class="row">
+                        @for (var j = 1; j <= 7; j++)
+                        {
+                            <div class="col-1 text-center">@j</div>
+                        } 
+                        </div>
+                        </div>
+                 <div class="col-2 text-center">&nbsp;</div>
+             </div>
+        }
+
+        if (i == 5)
+        {
+            <div class="row">
+             <div class="col-2 text-center">&nbsp;</div>
+                    <div class="col-8 text-center">
+                    <div class="row">
+                    @for (var j = 1; j <= 7; j++)
+                   {
+                           <div class="col-1 text-center">@j</div>
+            
+                   } 
+                        <div class="col-1 text-center">&nbsp;</div>
+                    </div>
+                    </div>
+                 <div class="col-2 text-center">&nbsp;</div>
+             </div>
+        }
+  }
+
+  </div>

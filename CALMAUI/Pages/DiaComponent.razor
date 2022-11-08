@@ -1,0 +1,248 @@
+﻿@inherits DiaComponentBase
+
+<PageTitle>Dia - Calendario</PageTitle>
+<h3 class="h3 text-center" style="cursor:pointer" @onclick="@(() => loadCitasFecha(hoy))">Vista Diaria - Hoy</h3>
+
+<div class="card">
+    <div class="card-header">@*Now:@DateTime.Now.Date - @fecha*@
+        <div class="h2 text-center" >@*fecha:@Convert.ToDateTime(fecha).Date*@
+            <div class="float-start" style="cursor:pointer" @onclick="@(() => loadCitasFecha(fecha1))">@("<<")</div>
+            @dialargo
+            @if (Convert.ToDateTime(fecha).Date == DateTime.Now.Date) { 
+                <strong>@("::" + @DateTime.Now.ToShortTimeString() + "::")</strong>
+            }
+            <div class="float-end" style="cursor:pointer" @onclick="@(() => loadCitasFecha(fecha2))">@(">>")</div>    
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-warning">
+            <tr class="bg-black text-light">
+                <th>Hora</th>
+                <th>Cita (Día)</th>
+                <th>Tarea (Periodo)</th>
+            </tr>
+
+            @{
+                i = 0;
+            }
+            @foreach (var hora in Horas)
+            {
+
+            @*   }
+                    @for (int i = 0; i < Horas.Count; i++)
+                    {
+*@             
+                // se pone negro fondo de hora actual y día
+                horaactual = DateTime.Now.Hour;
+@*                 desfase = 0;
+*@                ClassHora = "";
+@*                switch(i)
+                {
+                    case 0:
+                        if (horaactual <= 6) {
+                            horaaplica = horaactual + 6; 
+                            ClassHora = "bg-dark";
+                        }
+                        break;
+                    case > 0:
+                    case < 7:
+                         if (horaactual > 6 && horaactual < 13){
+                            horaaplica = horaactual;
+                            ClassHora = "bg-dark";
+                        }
+                    break;
+
+                    case > 6:
+                    case < 13:
+                            if (horaactual > 12 && horaactual < 18){
+                                if (horaactual == i+6) {
+                                horaaplica = horaactual;
+                                ClassHora = "bg-dark";
+                                }
+                            }
+
+                     break;
+                }
+
+
+                if (horaactual > 19 && i >= 13)
+                {
+                    horaaplica = horaactual;
+                    ClassHora = "bg-dark";
+                }*@
+                <tr class="@ClassHora">
+                <td>
+                    <div>
+                            @hora
+                            @*                            //- @(horaactual) - @(horaaplica) - @i
+                        @Horas[i] - @(horaactual) - @(horaaplica) - @i
+*@                    </div>
+                </td>
+                <td>
+                       @if(citas != null)
+                        {
+                            var cit = citas.Where(x => x.Hora == i);
+                            @if(cit.FirstOrDefault() != null)
+                            {
+                                @foreach (var item2 in cit)
+                                {
+                                    <div>
+                                        @if (item2.Verificado)
+                                        {
+                                            <span class="oi oi-check"></span>
+                                             @(" ");
+                                        }
+                                        else
+                                        {
+                                            @(" - ");
+                                        }
+                                        @item2.Descripcion.ToString()
+                                        @if(!String.IsNullOrEmpty(@item2.Notas))
+                                        {
+                                            @(" (" + @item2.Notas + ")"); 
+                                        }
+                                        @if(!String.IsNullOrEmpty(@item2.TemaId.ToString()))
+                                        {
+                                            <strong>&nbsp;Tema:</strong>
+                                            @(" (" + @temas.Where(x => x.Id == item2.TemaId).FirstOrDefault().Descripcion  + ")"); 
+                                        }
+                                    </div>
+                                    <div class="">+</div>
+
+                                }
+                            }
+                            else
+                            {
+                                //if (bolcrea && i == i2-1)
+                                if (bolcrea)
+                                {
+                                        <div class="container-fluid">- <input type="text" class="form-control" value="nueva cita @i2" /></div> 
+                                }
+                            <div class="" @onclick="(() => AgregaCita(i))">+</div>
+@*                                <div>&nbsp;</div>
+*@                            }
+                        }
+                        else
+                        {
+                            <div>
+                                No hay Citas
+                            </div>
+                        }
+                </td>
+                <td>
+
+                       @if(tareas != null)
+                        {
+                            var tar = tareas.Where(x => x.HoraInicio == i);
+                            @if(tar.FirstOrDefault() != null)
+                            {
+                                @foreach (var item3 in tar)
+                                {
+                                    <div>
+                                                                          
+                                        @if (item3.Verificado)
+                                        {
+                                            <span class="oi oi-check"></span>
+                                            @(" ");
+                                        }
+                                        else
+                                        {
+                                            @(" - ");
+                                        }
+                     
+                                            @item3.Descripcion.ToString()
+
+                                              
+
+                                        @{
+                                            var arr_date = item3.FechaFinaliza.ToString().Split(" ");
+                                            string fecha2;
+                                            if (arr_date!=null)
+                                            {
+                                                var arr_date2 = arr_date[0].Split("/");
+                                                if (arr_date2!=null)
+                                                {
+                                                  //  #if WINDOWS
+                                                        fecha2 = Mes[Convert.ToInt16(arr_date2[0]) - 1] + "/" + arr_date2[1] + "/" + arr_date2[2];
+                                                 //   #elif Android
+                                                 //       fecha2 = arr_date2[1] + "-" +Mes[Convert.ToInt16(arr_date2[0]) - 1] + "-" + arr_date2[2];
+                                                 //   #endif
+                                                    // FECHA EN BLAZOR
+                                                    //fecha2 = arr_date2[0] + "/" + Mes[Convert.ToInt16(arr_date2[1]) - 1] + "/" + arr_date2[2];
+                                                    // Fecha MAUI windows --OK--
+                                                    //fecha2 = arr_date2[1] + "/" + Mes[Convert.ToInt16(arr_date2[0]) - 1] + "/" + arr_date2[2];
+                                                    // Fecha MAUI ANDROID --PRUEBA--
+                                                    //fecha2 = Mes[Convert.ToInt16(arr_date2[0]) - 1] + "/" + arr_date2[1] + "/" + arr_date2[2];
+                                                }
+                                                else{
+                                                    fecha2 = fecha1;
+                                                }
+
+                                            }
+                                            else{
+                                                fecha2 = fecha1;
+                                            }
+       
+                                                             
+                                            if (Convert.ToDateTime(item3.FechaFinaliza).Date == Convert.ToDateTime(DateTime.Now.Date.AddDays(1)))
+                                            {
+                                                //fecha2 = "MAÑANA";
+                                                           @(" ")
+                                                            <strong>Fin:<span class="bg-dark text-light h4">(MAÑANA)</span></strong>
+                                            }
+                                            else
+                                            {
+                                                if (Convert.ToDateTime(item3.FechaFinaliza).Date == Convert.ToDateTime(DateTime.Now.Date))
+                                                {
+                                                //    fecha2 = "HOY";
+                                                           @(" ")
+                                                            <strong>Fin:<span class="bg-dark text-light h4">(HOY)</span></strong>
+
+                                                }
+                                                else
+                                                {
+                                                            @(" ")
+                                                            <strong>Fin:
+                                                                @("(" + fecha2 + ")")
+                                                            </strong>
+                                                }
+                                            }
+                                            if(!String.IsNullOrEmpty(@item3.Notas))
+                                            {
+                                                @(" (" + @item3.Notas + ")")
+                                            }
+                                            @if(!String.IsNullOrEmpty(@item3.TemaId.ToString()))
+                                            {
+                                                <strong>&nbsp;Tema:</strong>
+                                                @(" (" + @temas.Where(x => x.Id == item3.TemaId).FirstOrDefault().Descripcion  + ")"); 
+                                            }
+
+                                       // }
+                                       // 
+                                       //  
+                                       }
+                                    </div>
+                               }
+                            }
+                            else
+                            {
+                                <div>&nbsp;</div>
+                            }
+                        }
+                        else
+                        {
+                            <div>
+                                No hay Tareas
+                            </div>
+                        }
+
+
+
+                </td>
+                </tr>
+                @if (i<14){ i += 1; }
+            }
+        </table>
+    </div>
+
+</div>

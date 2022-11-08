@@ -1,0 +1,327 @@
+﻿@page "/citas"
+@inherits CitasComponentBase
+<h3>Citas Calendario  (@if(citas != null){ @citas.Count().ToString(); })</h3>
+    <button @onclick="@Add" class="btn btn-success">Adiciona Cita</button>
+@if (mode == MODE.Add)
+{
+    <EditForm  EditContext="CitaContext" OnSubmit="@Insert">
+    <DataAnnotationsValidator />
+    <div class="card" style="position: relative; border: dotted; background-color: #b5b5b5; padding: 20px 20px 20px 20px; z-index:1000">
+
+        <table class="col-sm-12 col-md-12 col-lg-12">
+            <tr class="bg-dark rounded-circle">
+                <th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2"
+                @onclick="@Cierra" style="cursor:pointer;">Crear Cita<span class="float-end text-right badge badge-dark">X</span>
+            </th></tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Descripción" @bind-Value="@Cita2.Descripcion" class="form-control" />
+                        <ValidationMessage For="@(()=>Cita2.Descripcion)" />
+                </td>
+            </tr>
+
+            <tr>
+                <td >
+
+                  <InputSelectNumber placeholder="TemaId"  class="form-control" 
+                    Id="TemaId"
+                    @bind-Value="@Cita2.TemaId"
+                  >
+                  <option value="0">--Seleccione Tema--</option>
+                      @foreach (var item in temas)
+                     {
+                        if (item.Id == Cita2.TemaId) { <option selected value="@item.Id">@item.Descripcion</option> } else { <option value="@item.Id">@item.Descripcion</option> }
+                     }
+                 </InputSelectNumber>
+                        <ValidationMessage For="@(()=>Cita2.TemaId)" />
+                </td>
+            </tr>
+
+
+            <tr>
+                <td >
+
+                    <InputSelectNumber class="form-control" @bind-Value="@Cita2.IdImportancia">
+                        <option>--Seleccione Importancia--</option>
+                        @for (var i = 0; i < Importancia.Count; i++)
+                            {
+                            if (i == Cita2.IdImportancia) { <option selected value="@i">@Importancia[i]</option> } else { <option value="@i">@Importancia[i]</option> }
+                            }
+                    </InputSelectNumber>
+
+
+                    </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <table class="col-xl-12 col-md-12 col-sm-12">
+                        <tr>
+                            <td class="col-xl-6 col-md-6 col-sm-6">
+
+                                <InputSelect class="form-control" @bind-Value="@Cita2.Hora">
+                                    <option>--Seleccione Hora--</option>
+                                    @for (var i = 0; i < Horas.Count; i++)
+                                        {
+                                            if (i == Cita2.Hora) 
+                                            {
+                                                <option selected value="@i">@Horas[i].ToString()</option>
+                                            }
+                                            else { 
+                                                <option value="@i">@Horas[i].ToString()</option>
+                                            }
+                                        }
+                                </InputSelect>
+                                    <ValidationMessage For="@(()=>Cita2.Hora)" />
+                                        </td>
+                            <td class="col-xl-6 col-md-6 col-sm-6">
+
+                                <InputDate class="form-control" placeholder="FechaHora" @bind-Value="@Cita2.Fecha" >
+                                </InputDate>
+
+                            </td>
+                        </tr>
+                    </table>
+
+               </td>
+            </tr>
+@*            <tr>
+                <td >
+                    <InputText placeholder="UserId" @bind-Value="@Cita2.UserId" class="form-control" />
+                        <ValidationMessage For="@(()=>Cita2.UserId)" />
+                </td>
+            </tr>
+*@            <tr>
+                <td >
+                    <InputTextArea placeholder="Notas" @bind-Value="@Cita2.Notas" class="form-control" />
+                        <ValidationMessage For="@(()=>Cita2.Notas)" />
+                </td>
+            </tr>
+@*            <tr>
+                <td >
+                    <InputNumber placeholder="ContactoId" @bind-Value="@Cita2.ContactoId" class="form-control" />
+                        <ValidationMessage For="@(()=>Cita2.ContactoId)" />
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td >
+                    <InputNumber placeholder="UsuarioId" @bind-Value="@Cita2.UsuarioId" class="form-control" />
+                        <ValidationMessage For="@(()=>Cita2.UsuarioId)" />
+                </td>
+            </tr>
+*@                            <tr>
+                <td class="text-center" ><div class="text-dark bg-light rounded-circle">Realizada:
+                    <InputCheckbox placeholder="Verificado" @bind-Value="@Cita2.Verificado"    />
+                        <ValidationMessage For="@(()=>Cita2.Verificado)" /></div>
+                </td>
+            </tr>
+
+             <tr>
+                <td >
+@*                    <InputCheckbox InputText placeholder="Verificado" @bind-Value="@Cita2.Verificado" class="form-control" />
+                        <ValidationMessage For="@(()=>Cita2.Verificado)" />
+*@                      <button type="submit" class="btn btn-info form-control">Adicionar</button>
+                          <button type="button" class="btn btn-dark form-control" @onclick="@(() => Listar())" >Volver al Listado</button>
+           </td>
+            </tr>
+      </table>
+    </div>
+    </EditForm>
+} 
+@if (mode == MODE.EditDelete)
+{
+    // TODO : 30-Dic-2021 6-30-pm : EDITANDO Cita : 
+    // HECHO : 01-Ene-2022 : 11-14-pm : Se hizo la edición e Citas : 
+    // HECHO : 03-Ene-2022 : 3-27-pm : EDITANDO InputSelectNumber para Prioridad en Citas Edicion :
+ 
+  <div class="card" style="position: relative; border: dotted; background-color: #b5b5b5; padding: 20px 20px 20px 20px; z-index:1000">
+
+    <EditForm EditContext="CitaEditContext" OnSubmit="@Update" >
+        <DataAnnotationsValidator />
+        <table class="col-sm-12 col-md-12 col-lg-12">
+            <tr class="bg-dark rounded-circle"><th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2" @onclick="@Cierra" style="cursor:pointer;">Editar Cita
+               <span class="float-end text-right badge badge-dark">X</span>
+            </th></tr>
+            <tr><td  class="col-sm-12 col-md-12 col-lg-12" >
+                    <InputNumber hidden @bind-Value="@Cita1.Id" />
+                    <InputText placeholder="Descripción" @bind-Value="@Cita1.Descripcion" class="form-control" />
+                        <ValidationMessage For="@(()=>Cita1.Descripcion)" />
+                </td>
+                </tr>
+                 <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                 <InputSelectNumber placeholder="TemaId"  class="form-control" 
+                    Id="TemaId"
+                    @bind-Value="@Cita1.TemaId"
+                  >
+                  <option value="0">--Seleccione Tema--</option>
+                      @foreach (var item in temas)
+                     {
+                        if (item.Id == Cita1.TemaId) { <option selected value="@item.Id">@item.Descripcion</option> } else { <option value="@item.Id">@item.Descripcion</option> }
+                     }
+                 </InputSelectNumber>
+                        <ValidationMessage For="@(()=>Cita1.TemaId)" />
+                 </td>
+                </tr>
+               <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                 <InputSelectNumber placeholder="IdImportancia"  class="form-control" 
+                    Id="IdImportancia"
+                    @bind-Value="@Cita1.IdImportancia"
+                  >
+                  <option value="0">--Seleccione Importancia--</option>
+                      @for (var i = 0; i < Importancia.Count; i++)
+                     {
+                        if (i == Cita1.IdImportancia) { <option selected value="@i">@Importancia[i]</option> } else { <option value="@i">@Importancia[i]</option> }
+                     }
+                 </InputSelectNumber>
+                        <ValidationMessage For="@(()=>Cita1.IdImportancia)" />
+                 </td>
+                </tr>
+                <tr>
+                    <td >
+                        <table class="col-xl-12 col-md-12 col-sm-12">
+                            <tr>
+                                <td class="col-xl-6 col-md-6 col-sm-6">
+                                    <InputDate id="Fecha" class="form-control" placeholder="Fecha" @bind-Value="@Cita1.Fecha">
+                                    </InputDate>
+                                </td>
+                                <td class="col-xl-6 col-md-6 col-sm-6">
+
+                                        <InputSelect class="form-control" @bind-Value="@Cita1.Hora">
+                                            <option>--Seleccione Hora--</option>
+                                            @for (var i = 0; i < Horas.Count; i++)
+                                                {
+                                                    if (i == Cita1.Hora) 
+                                                    {
+                                                        <option selected value="@i">@Horas[i].ToString()</option>
+                                                    }
+                                                    else { 
+                                                        <option value="@i">@Horas[i].ToString()</option>
+                                                    }
+                                                }
+                                        </InputSelect>
+                                            <ValidationMessage For="@(()=>Cita1.Hora)" />
+                            </td>
+                            </tr>
+                            </table>
+                    </td>
+                </tr>
+
+@*            <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                    <InputText placeholder="UserId" @bind-Value="@Cita1.UserId" class="form-control" />
+                        <ValidationMessage For="@(()=>Cita1.UserId)" />
+                </td>
+                </tr>
+*@             <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                    <InputTextArea placeholder="Notas" @bind-Value="@Cita1.Notas" class="form-control" />
+                        <ValidationMessage For="@(()=>Cita1.Notas)" />
+                </td>
+                </tr>
+@*             <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                    <InputNumber placeholder="ContactoId" @bind-Value="@Cita1.ContactoId" class="form-control" />
+                        <ValidationMessage For="@(()=>Cita1.ContactoId)" />
+                 </td>
+
+                </tr>
+*@
+@*             <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                    <InputNumber placeholder="UsuarioId" @bind-Value="@Cita1.UsuarioId" class="form-control" />
+                        <ValidationMessage For="@(()=>Cita1.UsuarioId)" />
+                </td>
+                </tr>
+*@
+             
+                <tr>
+                <td class="text-center" ><div class="text-dark bg-light rounded-circle">Realizada:
+                    <InputCheckbox placeholder="Verificado" @bind-Value="@Cita1.Verificado"    />
+                        <ValidationMessage For="@(()=>Cita1.Verificado)" /></div>
+                </td>
+            </tr>
+            <tr><td >
+                    <button type="submit" class="btn btn-info form-control" value="moodificar">Modificar</button>
+                    <button @onclick="@(() => Delete(Cita1.Id.ToString()))" value="borrar" class="btn btn-danger form-control">Borrar</button>
+                       <button type="button" class="btn btn-dark form-control" @onclick="@(() => Listar())" >Volver al Listado</button>
+                </td>
+                </tr>
+       </table>
+    </EditForm>
+    </div>
+}
+@if (mode == MODE.List)
+{
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>X</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Tema</th>
+        <th>Importancia</th>
+        <th>Notas</th>
+    </tr>
+    </thead>
+    <tbody>
+
+        @if (citas != null)
+            {
+                @foreach (var item in citas)
+                {
+                    // HECHO : 01-ENE-2022 : 11.40PM : Se puso la otra tabla de Prioridad para mostrar el Nombre de la proridad y no el IdPrioridad :
+                     <tr @onclick="@(() => Show(item.Id.ToString()))">
+                                <td @onmousemove="OnElementClick">
+                                    @{
+                                        var str_veri = "";
+                                        var veri = item.Verificado;
+                                        if (veri) { str_veri = "checked"; }
+                                    }
+                                   <input type="checkbox" id="Verificado" checked=@veri />
+                                </td>
+                                <td @onmousemove="OnElementClick">
+                                    
+                                    @item.Descripcion
+                                </td>
+                               <td @onmousemove="OnElementClick">
+                                    @{
+                                        string fe2 = "";
+                                        if (!String.IsNullOrEmpty(item.Fecha.ToString()))
+                                        {
+                                            var fe = item.Fecha.ToString().Split(" ");
+                                            fe2 = fe[0].ToString();
+                                        }
+
+                                    }
+                                    @fe2
+                                </td>
+                               <td @onmousemove="OnElementClick">
+                                   @if(!String.IsNullOrEmpty(item.Hora.ToString())){
+                                      @Horas[@item.Hora]
+                                    }  
+                                </td>
+                               <td>
+                                @if(@item.TemaId != null){
+                                     @temas.Where(x => x.Id == item.TemaId).FirstOrDefault().Descripcion
+                                }
+
+                                </td>
+                                <td>
+                                   
+                             @if(@item.IdImportancia != null){
+                                 @Importancia[@item.IdImportancia]
+                            }
+                               </td>
+                                  <td>
+                                    @item.Notas 
+                                </td>
+                  </tr>
+                }
+
+            }
+            else
+            {
+                <div>No hay citas cargadas</div>
+            }
+    </tbody>
+</table>
+}

@@ -1,0 +1,423 @@
+﻿@page "/tareas"
+@inherits TareasComponentBase
+
+<h3>Tareas Calendario  (@if(tareas != null){ @tareas.Count().ToString(); })</h3>
+
+   <button @onclick="@Add" class="btn btn-success">Adiciona Tarea</button>
+@if (mode == MODE.Add)
+{
+    // TODO : 11-Enero-2020 5.48pm : Insertando Tarea : 
+
+    <EditForm  EditContext="TareaContext" OnSubmit="@Insert">
+    <DataAnnotationsValidator />
+<div class="card" style="position: relative; border: dotted; background-color: #b5b5b5; padding: 20px 20px 20px 20px; z-index:1000">
+
+        <table class="col-sm-12 col-md-12 col-lg-12">
+            <tr class="bg-dark rounded-circle">
+                <th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2"
+                @onclick="@Cierra" style="cursor:pointer;">Crear Tarea<span class="float-end text-right badge badge-dark">X</span>
+            </th></tr>
+            <tr>
+                <td>
+                    <InputText placeholder="Descripción" @bind-Value="@Tarea2.Descripcion" class="form-control" />
+                        <ValidationMessage For="@(()=>Tarea2.Descripcion)" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                  <InputSelectNumber placeholder="TemaId"  class="form-control" Id="TemaId" @bind-Value="@Tarea2.TemaId" >
+                  <option value="0">--Seleccione Tema--</option>
+                      @foreach (var item in temas)
+                     {
+                        if (item.Id == Tarea2.TemaId) { <option selected value="@item.Id">@item.Descripcion</option> } else { <option value="@item.Id">@item.Descripcion</option> }
+                     }
+                 </InputSelectNumber>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                  <InputSelectNumber placeholder="CitaId"  class="form-control" Id="TemaId" @bind-Value="@Tarea2.CitaId" >
+                  <option value="0">--Seleccione Cita--</option>
+                      @foreach (var item in citastodas.Where(x => x.Verificado == false))
+                     {
+                        if (item.Id == Tarea2.CitaId) { <option selected value="@item.Id">@item.Descripcion</option> } else { <option value="@item.Id">@item.Descripcion</option> }
+                     }
+                 </InputSelectNumber>
+                </td>
+            </tr>
+            <tr><td>
+                    <InputSelectNumber class="form-control" @bind-Value="@Tarea2.IdImportancia">
+                        <option value="">--Seleccione Importancia--</option>
+                        @for (var i = 0; i < Importancia.Count; i++)
+                            {
+                            if (i == Tarea2.IdImportancia) { <option selected value="@i">@Importancia[i]</option> } else { <option value="@i">@Importancia[i]</option> }
+                            }
+                    </InputSelectNumber>
+
+            </td></tr>
+
+
+            <tr>
+                    <td  >
+                        <table class="col-xl-12 col-md-12 col-sm-12">
+                            <tr>
+                                <th class="col-xl-6 col-md-6 col-sm-6 text-center">Inicio</th>
+                                <th class="col-xl-6 col-md-6 col-sm-6 text-center">Final</th>
+                            </tr>
+                            <tr>
+                                <td class="col-xl-6 col-md-6 col-sm-6">
+                                        <InputDate id="FechaInicio" class="form-control" placeholder="FechaHora" @bind-Value="@Tarea2.FechaInicio">
+                                            </InputDate>
+                                        <InputSelect class="form-control" @bind-Value="@Tarea2.HoraInicio">
+                                            <option>--Seleccione Hora Inicia--</option>
+                                            @for (var i = 0; i < Horas.Count; i++)
+                                                {
+                                                    if (i == Tarea2.HoraInicio) 
+                                                    {
+                                                        <option selected value="@i">@Horas[i].ToString()</option>
+                                                    }
+                                                    else { 
+                                                        <option value="@i">@Horas[i].ToString()</option>
+                                                    }
+                                                }
+                                        </InputSelect>
+                                        <ValidationMessage For="@(()=>Tarea2.HoraInicio)" />
+                                </td>
+                                <td class="col-xl-6 col-md-6 col-sm-6">
+                                        <InputDate id="FechaFinaliza" class="form-control" placeholder="FechaHora" @bind-Value="@Tarea2.FechaFinaliza">
+                                        </InputDate>
+                                        <InputSelect class="form-control" @bind-Value="@Tarea2.HoraFinaliza">
+                                            <option>--Seleccione Hora Finaliza--</option>
+                                            @for (var i = 0; i < Horas.Count; i++)
+                                                {
+                                                    if (i == Tarea2.HoraFinaliza) 
+                                                    {
+                                                        <option selected value="@i">@Horas[i].ToString()</option>
+                                                    }
+                                                    else { 
+                                                        <option value="@i">@Horas[i].ToString()</option>
+                                                    }
+                                                }
+                                        </InputSelect>
+                                        <ValidationMessage For="@(()=>Tarea2.HoraFinaliza)" />
+                                        <InputText hidden placeholder="UserId" @bind-Value="@Tarea1.UserId" class="form-control" />
+                                     <InputNumber hidden placeholder="ContactoId" @bind-Value="@Tarea1.ContactoId" class="form-control" />
+
+                                </td>
+                            </tr>
+                        </table>
+                        
+                    </td>
+                </tr>
+
+
+
+
+            <tr>
+                <td >
+                    <InputTextArea placeholder="Notas" @bind-Value="@Tarea2.Notas" class="form-control" />
+                        <ValidationMessage For="@(()=>Tarea2.Notas)" />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center" ><div class="text-dark bg-light rounded-circle">Realizada:
+                    <InputCheckbox placeholder="Verificado" @bind-Value="@Tarea2.Verificado"    />
+                        <ValidationMessage For="@(()=>Tarea2.Verificado)" /></div>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td >
+@*                    <InputNumber placeholder="UsuarioId" @bind="@Tarea2.UsuarioId" class="form-control" />
+                        <ValidationMessage For="@(()=>Tarea2.UsuarioId)" />
+*@                    <button type="submit" class="btn btn-info form-control">Adicionar Tarea</button>
+                       <button type="button" class="btn btn-dark form-control" @onclick="@(() => Listar())" >Volver al Listado</button>
+   
+</td>
+            </tr>
+       </table>
+    </div>
+    </EditForm>
+} 
+@if (mode == MODE.EditDelete)
+{
+    // TODO : 12-Enero-2022 2.43-pm : EDITANDO Tarea : 
+    <EditForm EditContext="TareaEditContext" OnSubmit="@Update" >
+        <DataAnnotationsValidator />
+
+<div class="card" style="position: relative; border: dotted; background-color: #b5b5b5; padding: 20px 20px 20px 20px; z-index:1000">
+        <table class="col-sm-12 col-md-12 col-lg-12">
+            <tr class="bg-dark rounded-circle">
+                <th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2" @onclick="@Cierra" style="cursor:pointer;">Editar Tarea
+                    <span class="float-end text-right badge badge-dark">X</span>
+                </th>
+            </tr>
+            <tr>
+                <td  class="col-sm-12 col-md-12 col-lg-12" >
+                    <InputNumber hidden @bind-Value="@Tarea1.Id" />
+                    <InputText placeholder="Descripción" @bind-Value="@Tarea1.Descripcion" class="form-control" />
+                        <ValidationMessage For="@(()=>Tarea1.Descripcion)" />
+                </td>
+                </tr>
+                 <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                     
+                 <InputSelectNumber placeholder="TemaId"  class="form-control" 
+                    Id="TemaId"
+                    @bind-Value="@Tarea1.TemaId"
+                  >
+                  <option value="">--Seleccione Tema--</option>
+                      @foreach (var item in temas)
+                     {
+                        if (item.Id == Tarea1.TemaId) { <option selected value="@item.Id">@item.Descripcion</option> } else { <option value="@item.Id">@item.Descripcion</option> }
+                     }
+                 </InputSelectNumber>
+                 </td>
+                </tr>
+                <tr>
+                <td>
+                  <InputSelectNumber placeholder="CitaId"  class="form-control" Id="CitaId" @bind-Value="@Tarea1.CitaId" >
+                  <option value="">--Seleccione Cita--</option>
+                      @foreach (var item in citastodas.Where(x => x.Verificado == false))
+                     {
+                        if (item.Id == Tarea1.CitaId) { <option selected value="@item.Id">@item.Descripcion</option> } else { <option value="@item.Id">@item.Descripcion</option> }
+                     }
+                 </InputSelectNumber>
+                </td>
+            </tr>
+
+                <tr><td>
+                    <InputSelectNumber class="form-control" @bind-Value="@Tarea1.IdImportancia">
+                        <option value="">--Seleccione Importancia--</option>
+                        @for (var i = 0; i < Importancia.Count; i++)
+                            {
+                            if (i == Tarea1.IdImportancia) { <option selected value="@i">@Importancia[i]</option> } else { <option value="@i">@Importancia[i]</option> }
+                            }
+                    </InputSelectNumber>
+
+                </td></tr>
+
+@*               <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                 <InputSelectNumber placeholder="PrioridadId"  class="form-control" 
+                    Id="PrioridadId"
+                    @bind-Value="@Tarea1.PrioridadId"
+                  >
+                  <option value="0">--Seleccione Prioridad--</option>
+                      @foreach (var item in Prio)
+                     {
+                        if (item.Id == Tarea1.PrioridadId) { <option selected value="@item.Id">@item.Nombre</option> } else { <option value="@item.Id">@item.Nombre</option> }
+                     }
+                 </InputSelectNumber>
+                        <ValidationMessage For="@(()=>Tarea1.PrioridadId)" />
+                 </td>
+                </tr>
+*@    
+                <tr>
+                    <td >
+                        <table class="col-xl-12 col-md-12 col-sm-12">
+                            <tr>
+                                <th class="col-xl-6 col-md-6 col-sm-6 text-center">Inicio</th>
+                                <th class="col-xl-6 col-md-6 col-sm-6 text-center">Final</th>
+                            </tr>
+                            <tr>
+                                <td class="col-xl-6 col-md-6 col-sm-6">
+                                            <InputDate id="FechaInicio" class="form-control" placeholder="FechaHora" @bind-Value="@Tarea1.FechaInicio">
+                                            </InputDate>
+                                        <InputSelect class="form-control" @bind-Value="@Tarea1.HoraInicio">
+                                            <option>--Seleccione Hora Inicia--</option>
+                                            @for (var i = 0; i < Horas.Count; i++)
+                                                {
+                                                    if (i == Tarea1.HoraInicio) 
+                                                    {
+                                                        <option selected value="@i">@Horas[i].ToString()</option>
+                                                    }
+                                                    else { 
+                                                        <option value="@i">@Horas[i].ToString()</option>
+                                                    }
+                                                }
+                                        </InputSelect>
+                                            <ValidationMessage For="@(()=>Tarea1.HoraInicio)" />
+
+                                </td>
+                                <td class="col-xl-6 col-md-6 col-sm-6">
+                                    <InputDate id="FechaFinaliza" class="form-control" placeholder="FechaHora" @bind-Value="@Tarea1.FechaFinaliza">
+                                    </InputDate>
+                                    <InputSelect class="form-control" @bind-Value="@Tarea1.HoraFinaliza">
+                                        <option>--Seleccione Hora Finaliza--</option>
+                                        @for (var i = 0; i < Horas.Count; i++)
+                                            {
+                                                if (i == Tarea1.HoraFinaliza) 
+                                                {
+                                                    <option selected value="@i">@Horas[i].ToString()</option>
+                                                }
+                                                else { 
+                                                    <option value="@i">@Horas[i].ToString()</option>
+                                                }
+                                            }
+                                    </InputSelect>
+                                    <ValidationMessage For="@(()=>Tarea1.HoraFinaliza)" />
+
+                                    <InputText hidden placeholder="UserId" @bind-Value="@Tarea1.UserId" class="form-control" />
+                                      <InputNumber hidden placeholder="ContactoId" @bind-Value="@Tarea1.ContactoId" class="form-control" />
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+
+            <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                    <InputTextArea  placeholder="Notas" @bind-Value="@Tarea1.Notas" class="form-control" />
+                        <ValidationMessage For="@(()=>Tarea1.Notas)" />
+                </td>
+                </tr>
+
+             @*<tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                    <InputNumber placeholder="UsuarioId" @bind="@Tarea1.UsuarioId" class="form-control" />
+                        <ValidationMessage For="@(()=>Tarea1.UsuarioId)" />
+                </td>
+                </tr>*@
+
+                <tr>
+                    <td>
+                        <div id="FechaHoraRegistro" class="h6 text-center form-control-plaintext" placeholder="FechaHora">
+                           Registrada en Fecha - Hora: <div class="h7">@Convert.ToDateTime(Tarea1.FechaRegistro).ToLongDateString()
+                            - @Horas[Tarea1.HoraRegistro.Value]</div>
+                        </div>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="text-center" ><div class="text-dark bg-light rounded-circle">Realizada:
+                    <InputCheckbox placeholder="Verificado" @bind-Value="@Tarea1.Verificado"    />
+                        <ValidationMessage For="@(()=>Tarea1.Verificado)" /></div>
+                </td>
+            </tr>
+
+             <tr><td >
+                    <button type="submit" class="btn btn-info form-control" value="moodificar">Modificar</button>
+                    <button @onclick="@(() => Delete(Tarea1.Id.ToString()))" value="borrar" class="btn btn-danger form-control">Borrar</button>
+                         <button type="button" class="btn btn-dark form-control" @onclick="@(() => Listar())" >Volver al Listado</button>
+
+                </td>
+                </tr>
+       </table>
+       </div>
+    </EditForm>
+}
+@if (mode == MODE.List)
+{
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>X</th>
+        <th>Descripción</th>
+        <th>Tema / Cita</th>
+        <th>Importancia</th>
+        <th>Fecha Hora Inicia</th>
+        <th>Fecha Hora Termina</th>
+       <th>Notas</th>
+    </tr>
+    </thead>
+    <tbody>
+
+        @if (tareas != null)
+            {
+                @foreach (var item in tareas)
+                {
+                    // HECHO : 01-ENE-2022 : 11.40PM : Se puso la otra tabla de Prioridad para mostrar el Nombre de la proridad y no el IdPrioridad :
+                     <tr @onclick="@(() => Show(item.Id.ToString()))">
+                                <td @onmousemove="OnElementClick">
+                                    @{
+                                        var str_veri = "";
+                                        var veri = item.Verificado;
+                                        if (veri) { str_veri = "checked"; }
+                                    }
+                                   <input type="checkbox" id="Verificado" checked=@veri />
+                                </td>
+
+                                <td @onmousemove="OnElementClick">
+                                    @item.Descripcion
+                                </td>
+                               <td  @onmousemove="OnElementClick">
+@*                                   // Si TemaId no se encuentra en tabla de temas se borro.
+*@                               @if(@item.TemaId != null){
+                                       <div class="h6"><strong>Tema:</strong>
+                                           @if (temas.Where(x => x.Id == item.TemaId).FirstOrDefault() != null)
+                                          {
+                                        @temas.Where(x => x.Id == item.TemaId).FirstOrDefault().Descripcion
+                                    }else
+                                    {
+                                        <span>No hay Citas</span>
+                                    }
+                                </div>
+                                }
+                                @if(@item.CitaId != null){
+                                    <div class="h6"><strong>Cita:</strong>
+                                        @if (citastodas.Where(x => x.Id == item.CitaId).FirstOrDefault() != null)
+                                       {
+                                        @citastodas.Where(x => x.Id == item.CitaId).FirstOrDefault().Descripcion
+                                    }
+                                    else
+                                    {
+                                        <span>No hay Citas</span>
+                                    }
+                                </div>
+                                }
+                                </td>
+                                <td>
+                             @if(@item.IdImportancia != null){
+                                if (Importancia != null)
+                                {
+                                    <div>@Importancia[@item.IdImportancia].ToString()</div>
+                                }
+                                else
+                                {
+                                    <div>No hay Importancia</div>
+                                }
+                        }
+                               </td>
+                               <td @onmousemove="OnElementClick"><div>
+                                    @{
+                                        string fe2 = "";
+                                        if (!String.IsNullOrEmpty(item.FechaInicio.ToString()))
+                                        {
+                                            var fe = item.FechaInicio.ToString().Split(" ");
+                                            fe2 = fe[0].ToString();
+                                        }
+                                    }
+                                    @fe2
+                                   @if(!String.IsNullOrEmpty(item.HoraInicio.ToString())){
+                                        @(" - " + Horas[@Convert.ToInt16(item.HoraInicio)]); 
+                                    }  
+                                    </div>
+                                </td>
+                              <td @onmousemove="OnElementClick">
+                                    @{
+                                        string fe3 = "";
+                                        if (!String.IsNullOrEmpty(item.FechaFinaliza.ToString()))
+                                        {
+                                            var fe = item.FechaFinaliza.ToString().Split(" ");
+                                            fe3 = fe[0].ToString();
+                                        }
+                                    }
+                                    @fe3
+                                    @if(!String.IsNullOrEmpty(item.HoraFinaliza.ToString())){
+                                        @(" - " + Horas[@Convert.ToInt16(item.HoraFinaliza)]); 
+                                    }  
+                                </td>
+                                  <td>
+                                    @item.Notas 
+                                </td>
+                  </tr>
+                }
+            }
+            else
+            {
+                <div>No hay Tareas cargadas</div>
+            }
+    </tbody>
+</table>
+}

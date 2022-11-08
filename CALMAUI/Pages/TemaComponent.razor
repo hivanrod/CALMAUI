@@ -1,0 +1,234 @@
+﻿@inherits TemaComponentBase
+@page "/temas"
+<h3>Temas de Calendario (@if(Temas != null){ @Temas.Count().ToString(); })
+    @if (!String.IsNullOrEmpty(Filter)) { 
+        @("Filtrando Por : " + Filter.ToString() + " "); 
+        <button @onclick="@(() => Filtro("",""))" class="btn btn-success">Listar Todos Los Temas</button>
+    }</h3>
+    <button @onclick="@Add" class="btn btn-success">Adiciona Tema</button>
+@if (mode == MODE.Add)
+{
+    // TODO : 30-Dic-2021 12-56-pm : Insertando Tema : 
+    // HECHO : 01-Ene-2022 : 11-14-pm : Se hizo la inserrción e temas :
+    // HECHO : 01-Ene-2022 : 11-38-pm : CREANDO InputSelectNumber para Prioridad en Temas Edicion :
+    // HECHO : 03-Ene-2022 : 3.24PM : Ya se creo helper InputSelectNumber EDICION Y CREACION : Se esta creando la cita con fecha hora en Dia.razor.cs :
+<div class="card" style="position: relative; border: dotted; background-color: #b5b5b5; padding: 20px 20px 20px 20px; z-index:1000">
+  <EditForm  EditContext="TemaContext" OnSubmit="@Insert">
+    <DataAnnotationsValidator />
+        <table class="col-sm-12 col-md-12 col-lg-12">
+            <tr class="bg-dark rounded-circle">
+                <th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2" @onclick="@Cierra" style="cursor:pointer;">Insertar Tema
+                    <span class="float-end text-right badge badge-dark">X</span>
+                </th>
+            </tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Descripción" @bind-Value="@Tema2.Descripcion" class="form-control" />
+                        <ValidationMessage For="@(()=>Tema2.Descripcion)" />
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <InputSelectNumber   class="form-control" @bind-Value="@Tema2.PrioridadId">
+                        <option value="0">--Seleccione Prioridad--</option>
+                        @foreach (var item in Prio)
+                            {
+                            if (item.Id == Tema1.PrioridadId) { <option selected value="@item.Id">@item.Nombre</option> } else { <option value="@item.Id">@item.Nombre</option> }
+                            }
+                    </InputSelectNumber>
+                </td>
+            </tr>
+@*            <tr>
+                <td >
+                    <InputText placeholder="UserId" @bind-Value="@Tema2.UserId" class="form-control" />
+                        <ValidationMessage For="@(()=>Tema2.UserId)" />
+                </td>
+            </tr>
+*@            <tr>
+                <td >
+                    <InputTextArea placeholder="Notas" @bind-Value="@Tema2.Notas" class="form-control" />
+                        <ValidationMessage For="@(()=>Tema2.Notas)" />
+                </td>
+            </tr>
+@*            <tr>
+                <td >
+                    <InputNumber placeholder="ContactoId" @bind-Value="@Tema2.ContactoId" class="form-control" />
+                        <ValidationMessage For="@(()=>Tema2.ContactoId)" />
+                </td>
+            </tr>
+*@
+
+
+@*            <tr>
+                <td >
+                    <InputNumber placeholder="UsuarioId" @bind-Value="@Tema2.UsuarioId" class="form-control" />
+                        <ValidationMessage For="@(()=>Tema2.UsuarioId)" />
+                    <button type="submit" class="btn btn-danger form-control">Adicionar</button>
+                </td>
+            </tr>
+*@             <tr>
+                <td >
+@*                    <InputNumber placeholder="UsuarioId" @bind-Value="@Tarea2.UsuarioId" class="form-control" />
+                        <ValidationMessage For="@(()=>Tarea2.UsuarioId)" />
+*@                    <button type="submit" class="btn btn-danger form-control">Adicionar</button>
+                       <button type="button" class="btn btn-dark form-control" @onclick="@(() => Listar())" >Volver al Listado</button>
+
+                </td>
+            </tr>
+
+      </table>
+     </EditForm>
+</div>
+} 
+@if (mode == MODE.EditDelete)
+    // TODO : 30-Dic-2021 6-30-pm : EDITANDO Tema : 
+    // HECHO : 01-Ene-2022 : 11-14-pm : Se hizo la edición e temas : 
+    // HECHO : 03-Ene-2022 : 3-27-pm : EDITANDO InputSelectNumber para Prioridad en Temas Edicion :
+{
+    <div class="card" style="position: relative; border: dotted; background-color: #b5b5b5; padding: 20px 20px 20px 20px; z-index:1000">
+             <EditForm EditContext="TemaEditContext" OnSubmit="@Update">
+                <DataAnnotationsValidator />
+                <table class="col-sm-12 col-md-12 col-lg-12">
+                   <tr class="bg-dark rounded-circle">
+                        <td class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2" @onclick="@Cierra" style="cursor:pointer;">Editar Tema
+                            <span class="float-end text-right badge badge-dark">X</span>
+                        </td>
+                    </tr>
+                    <tr><td  class="col-sm-12 col-md-12 col-lg-12" >
+                            <InputNumber hidden @bind-Value="@Tema1.Id" />
+                            <InputText placeholder="Descripción" @bind-Value="@Tema1.Descripcion" class="form-control" />
+                                <ValidationMessage For="@(()=>Tema1.Descripcion)" />
+                        </td>
+                        </tr>
+                        <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                         <InputSelectNumber placeholder="PrioridadId"  class="form-control" 
+                            Id="PrioridadId"
+                            @bind-Value="@Tema1.PrioridadId"
+                          >
+                          <option value="0">--Seleccione Prioridad--</option>
+                              @foreach (var item in Prio)
+                             {
+                                if (item.Id == Tema1.PrioridadId) { <option selected value="@item.Id">@item.Nombre</option> } else { <option value="@item.Id">@item.Nombre</option> }
+                             }
+                         </InputSelectNumber>
+                                <ValidationMessage For="@(()=>Tema1.PrioridadId)" />
+                         </td>
+                        </tr>
+    @*                <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                            <InputText placeholder="UserId" @bind-Value="@Tema1.UserId" class="form-control" />
+                                <ValidationMessage For="@(()=>Tema1.UserId)" />
+                        </td>
+                        </tr>
+    *@                 <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                            <InputTextArea placeholder="Notas" @bind-Value="@Tema1.Notas" class="form-control" />
+                                <ValidationMessage For="@(()=>Tema1.Notas)" />
+                        </td>
+                        </tr>
+    @*                 <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                            <InputNumber placeholder="ContactoId" @bind-Value="@Tema1.ContactoId" class="form-control" />
+                                <ValidationMessage For="@(()=>Tema1.ContactoId)" />
+                         </td>
+
+                        </tr>
+    *@
+    @*                 <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+                            <InputNumber placeholder="UsuarioId" @bind-Value="@Tema1.UsuarioId" class="form-control" />
+                                <ValidationMessage For="@(()=>Tema1.UsuarioId)" />
+                        </td>
+                        </tr>
+    *@                 <tr><td >
+        @*                    <InputSelect  placeholder="PrioridadId" @bind-Value="@Tema1.UsuarioId" class="form-control" />
+                                <ValidationMessage For="@(()=>Tema1.UsuarioId)" />
+        *@                    <button type="submit" class="btn btn-info form-control">Modificar</button>
+                            <button @onclick="@(() => Delete(Tema1.Id.ToString()))" value="borrar" class="btn btn-danger form-control">Borrar</button>
+                           <button type="button" class="btn btn-dark form-control" @onclick="@(() => Listar())" >Volver al Listado</button>
+
+                        </td>
+                        </tr>
+         </table>
+           </EditForm>
+        <table class="col-sm-12 col-md-12 col-lg-12">
+                <tr  class="col-sm-12 col-md-12 col-lg-12">
+                    <td  class="col-sm-12 col-md-12 col-lg-12">
+                    <RepeticionComponent ObjetoId="@Tema1.Id" TipoObjetoId=1 TemaId="@Tema1.Id" temas=Temas historicoTareas=historicoTareas historicoCitas=historicoCitas />
+                    </td>
+                </tr>
+                <tr  class="col-sm-12 col-md-12 col-lg-12">
+                    <td  class="col-sm-12 col-md-12 col-lg-12">
+                    <HistoricoCitasComponent ObjetoId="@Tema1.Id" TipoObjetoId=1 TemaId="@Tema1.Id" temas=Temas  historicoCitas=historicoCitas  />
+                    </td>
+                </tr>
+                <tr  class="col-sm-12 col-md-12 col-lg-12">
+                    <td  class="col-sm-12 col-md-12 col-lg-12">
+                    <HistoricoTareasComponent ObjetoId="@Tema1.Id" TipoObjetoId=1 TemaId="@Tema1.Id" temas=Temas historicoTareas=historicoTareas  />
+                    </td>
+                </tr>
+        </table>    
+    </div>
+
+}
+@if(mode == MODE.List) {
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Descripción - Edita</th>
+        <th>Prioridad - Filtra</th>
+        <th>Citas</th>
+        <th>Tareas</th>
+        <th>Notas</th>
+    </tr>
+    </thead>
+    <tbody>
+
+        @if (Temas != null)
+            {
+                @foreach (var item in Temas)
+                {
+                    Filter = "";
+                    // HECHO : 01-ENE-2022 : 11.40PM : Se puso la otra tabla de Prioridad para mostrar el Nombre de la proridad y no el IdPrioridad :
+                     <tr >
+                               <td @onmousemove="OnElementClick" @onclick="@(() => Show(item.Id.ToString()))">
+                                    @item.Descripcion
+                                </td>
+                        @{
+                            if(@item.PrioridadId != null || !String.IsNullOrEmpty(Filter) )
+                            { 
+                                //@Prio.Where(x => x.Id == item.PrioridadId).FirstOrDefault().Nombre.ToString();
+                                Filter = Prio.Where(x => x.Id == item.PrioridadId).FirstOrDefault().Nombre.ToString();
+                            }
+                            else
+                            {
+                                Filter = "";
+                            }
+                        }
+                                <td @onclick="@(() => 
+                                    Filtro(item.PrioridadId.ToString(),
+                                    Filter
+                                    ))" >
+                                   
+                             @if(@item.PrioridadId != null){ @Prio.Where(x => x.Id == item.PrioridadId).FirstOrDefault().Nombre }
+                               </td>
+                                  <td @onmousemove="OnElementClick">
+                                      <span class="badge bg-primary rounded-pill">
+                                        @citas.Where(x => x.TemaId == item.Id).Count().ToString()
+                                    </span>
+                                </td>
+                                  <td @onmousemove="OnElementClick">
+                                      <span class="badge bg-dark text-light bg-primary rounded-pill">
+                                    @tareas.Where(x => x.TemaId == item.Id).Count().ToString()
+                                    </span>
+                                </td>
+                                  <td @onmousemove="OnElementClick">
+                                    @item.Notas
+                                </td>
+                  </tr>
+                }
+
+            }
+            else
+            {
+                <div>No hay prioridades cargadas</div>
+            }
+    </tbody>
+</table>
+}

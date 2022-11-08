@@ -1,0 +1,235 @@
+﻿@inherits ContactosComponentBase
+@page "/contactos"
+<h3>Contactos Calendario (@if(contactos != null){ @contactos.Count().ToString(); })</h3>
+    <button @onclick="@Add" class="btn btn-success">Adiciona Contacto</button>
+
+@if (mode == MODE.Insert)
+{
+    <EditForm  EditContext="ContactoInsertContext" OnSubmit="@Insert">
+    <DataAnnotationsValidator />
+    <div class="card" style="position: relative; border: dotted; background-color: #b5b5b5; padding: 20px 20px 20px 20px; z-index:1000">
+
+        <table class="col-sm-12 col-md-12 col-lg-12">
+            <tr class="bg-dark rounded-circle">
+                <th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2"
+                @onclick="@Cierra" style="cursor:pointer;">Crear Contacto<span class="float-end text-right badge badge-dark">X</span>
+            </th></tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Nombres" @bind-Value="@Contacto2.Nombres" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto2.Nombres)" />
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Apellidos" @bind-Value="@Contacto2.Apellidos" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto2.Apellidos)" />
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Correo Electrónico" @bind-Value="@Contacto2.CorreoElectronico" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto2.CorreoElectronico)" />
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Dirección" @bind-Value="@Contacto2.Direccion" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto2.Direccion)" />
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Telefono" @bind-Value="@Contacto2.Telefono" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto2.Telefono)" />
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Empresa" @bind-Value="@Contacto2.Empresa" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto2.Empresa)" />
+                </td>
+            </tr>
+
+            <tr>
+                <td >
+                    <InputTextArea placeholder="Notas" @bind-Value="@Contacto2.Notas" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto2.Notas)" />
+                </td>
+            </tr>
+             <tr>
+                <td > 
+                    <button type="submit" class="btn btn-info form-control">Adicionar</button>
+                          <button type="button" class="btn btn-dark form-control" @onclick="@(() => Listar())" >Volver al Listado</button>
+           </td>
+            </tr>
+      </table>
+    </div>
+    </EditForm>
+}
+@if (mode == MODE.EditDelete)
+{
+    <EditForm  EditContext="ContactoEditContext" OnSubmit="@Update">
+    <DataAnnotationsValidator />
+    <div class="card" style="position: relative; border: dotted; background-color: #b5b5b5; padding: 20px 20px 20px 20px; z-index:1000">
+
+        <table class="col-sm-12 col-md-12 col-lg-12">
+            <tr class="bg-dark rounded-circle">
+                <th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2"
+                @onclick="@Cierra" style="cursor:pointer;">Edita Contacto<span class="float-end text-right badge badge-dark">X</span>
+            </th></tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Nombres" @bind-Value="@Contacto1.Nombres" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto1.Nombres)" />
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Apellidos" @bind-Value="@Contacto1.Apellidos" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto1.Apellidos)" />
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Correo Electrónico" @bind-Value="@Contacto1.CorreoElectronico" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto1.CorreoElectronico)" />
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Dirección" @bind-Value="@Contacto1.Direccion" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto1.Direccion)" />
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Telefono" @bind-Value="@Contacto1.Telefono" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto1.Telefono)" />
+                </td>
+            </tr>
+            <tr>
+                <td >
+                    <InputText placeholder="Empresa" @bind-Value="@Contacto1.Empresa" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto1.Empresa)" />
+                </td>
+            </tr>
+
+            <tr>
+                <td >
+                    <InputTextArea placeholder="Notas" @bind-Value="@Contacto1.Notas" class="form-control" />
+                        <ValidationMessage For="@(()=>Contacto1.Notas)" />
+                </td>
+            </tr>
+             <tr>
+                <td > 
+                    <button type="submit" class="btn btn-info form-control">Modificar</button>
+                    <button @onclick="@(() => Delete(contacto.Id.ToString()))" value="borrar" class="btn btn-danger form-control">Borrar</button>
+                    <button type="button" class="btn btn-dark form-control" @onclick="@(() => Listar())" >Volver al Listado</button>
+           </td>
+            </tr>
+      </table>
+    </div>
+    </EditForm>
+}
+@if (mode == MODE.List)
+{
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+    @*        <th>X</th>
+    *@        <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Correo Electrónico</th>
+            <th>Dirección</th>
+            <th>Empresa</th>
+            <th>Teléfono</th>
+            <th>Notas</th>
+        </tr>
+        </thead>
+        <tbody>
+
+            @if (contactos != null)
+                {
+                    @foreach (var item in contactos)
+                    {
+                        // HECHO : 01-ENE-2022 : 11.40PM : Se puso la otra tabla de Prioridad para mostrar el Nombre de la proridad y no el IdPrioridad :
+                         <tr @onclick="@(() => Show(item.Id.ToString()))">
+    @*                                <td @onmousemove="OnElementClick">
+                                        @{
+                                            var str_veri = "";
+                                            var veri = item.Verificado;
+                                            if (veri) { str_veri = "checked"; }
+                                        }
+                                       <input type="checkbox" id="Verificado" checked=@veri />
+                                    </td>
+    *@  
+                                    <td @onmousemove="OnElementClick">
+                                    
+                                        @item.Nombres
+                                    </td>
+                                    <td @onmousemove="OnElementClick">
+                                    
+                                        @item.Apellidos
+                                    </td>
+                                    <td @onmousemove="OnElementClick">
+                                    
+                                        @item.CorreoElectronico
+                                    </td>
+                                    <td @onmousemove="OnElementClick">
+                                    
+                                        @item.Direccion
+                                    </td>
+                                    <td @onmousemove="OnElementClick">
+                                    
+                                        @item.Empresa
+                                    </td>
+                                    <td @onmousemove="OnElementClick">
+                                    
+                                        @item.Telefono
+                                    </td>
+    @*                               <td @onmousemove="OnElementClick">
+                                        @{
+                                            string fe2 = "";
+                                            if (!String.IsNullOrEmpty(item.Fecha.ToString()))
+                                            {
+                                                var fe = item.Fecha.ToString().Split(" ");
+                                                fe2 = fe[0].ToString();
+                                            }
+
+                                        }
+                                        @fe2
+                                    </td>
+                                   <td @onmousemove="OnElementClick">
+                                       @if(!String.IsNullOrEmpty(item.Hora.ToString())){
+                                          @Horas[@item.Hora]
+                                        }  
+                                    </td>
+                                   <td>
+                                    @if(@item.TemaId != null){
+                                         @temas.Where(x => x.Id == item.TemaId).FirstOrDefault().Descripcion
+                                    }
+
+                                    </td>
+                                    <td>
+                                   
+                                 @if(@item.IdImportancia != null){
+                                     @Importancia[@item.IdImportancia]
+                                }
+                                   </td>
+    *@                                  <td>
+                                        @item.Notas 
+                                    </td>
+                      </tr>
+                    }
+
+                }
+                else
+                {
+                    <div>No hay citas cargadas</div>
+                }
+        </tbody>
+    </table>
+
+}
