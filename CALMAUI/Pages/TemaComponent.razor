@@ -173,8 +173,8 @@
     <tr>
         <th>Descripción - Edita</th>
         <th>Prioridad - Filtra</th>
-        <th>Citas</th>
         <th>Tareas</th>
+        <th>Citas</th>
         <th>Notas</th>
     </tr>
     </thead>
@@ -209,17 +209,17 @@
                              @if(@item.PrioridadId != null){ @Prio.Where(x => x.Id == item.PrioridadId).FirstOrDefault().Nombre }
                                </td>
                                   <td @onmousemove="OnElementClick">
-                                      <span class="badge bg-primary rounded-pill">
-                                        @citas.Where(x => x.TemaId == item.Id).Count().ToString()
-                                    </span>
-                                </td>
-                                  <td @onmousemove="OnElementClick">
                                       <span class="badge bg-dark text-light bg-primary rounded-pill">
                                     @tareas.Where(x => x.TemaId == item.Id).Count().ToString()
                                     </span>
                                 </td>
-                                  <td @onmousemove="OnElementClick">
-                                    @item.Notas
+                                <td @onmousemove="OnElementClick">
+                                    <span class="badge bg-primary rounded-pill">
+                                        @citas.Where(x => x.TemaId == item.Id).Count().ToString()
+                                    </span>
+                                </td>
+                                <td @onmousemove="OnElementClick">
+                                            @item.Notas
                                 </td>
                   </tr>
                 }

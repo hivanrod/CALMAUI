@@ -57,7 +57,8 @@
         <th>Nombre</th>
         <th>Orden</th>
         <th>#Temas</th>
-        <th>#Citas</th>
+                <th>#Tareas</th>
+                <th>#Citas</th>
 @*        <th>#Tareas</th>
 *@    </tr>
     </thead>
@@ -74,10 +75,13 @@
                             <td>
                                 <span class="badge bg-warning rounded-pill">@item.Orden</span>
                             </td>
-                            <td>
-                                <span class="badge bg-primary rounded-pill">@temas.Where(x => x.PrioridadId == item.Id).Count()</span>
-                            </td>
-                            <td>
+                        <td>
+                            <span class="badge bg-primary rounded-pill">@temas.Where(x => x.PrioridadId == item.Id).Count()</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-primary rounded-pill">@tareas.Where(x => x.PrioridadId == item.Id).Count()</span>
+                        </td>
+                        <td>
                                 <span class="badge bg-primary rounded-pill">@citas.Where(x => x.PrioridadId == item.Id).Count()</span>
                             </td>
 @*                            <td>

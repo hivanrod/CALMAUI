@@ -73,6 +73,7 @@ namespace CALMAUI.Models
         public int? UsuarioId { get; set; }
         [Required(ErrorMessage = "Debe poner un Tema")]
         public int? TemaId { get; set; }
+        public int? TareaId { get; set; }
 
         //public virtual Contacto Contacto { get; set; }
 

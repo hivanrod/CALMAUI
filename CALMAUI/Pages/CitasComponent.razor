@@ -37,6 +37,26 @@
                 </td>
             </tr>
 
+            <tr>
+                <td >
+
+                  <InputSelectNumber placeholder="TareaId"  class="form-control" 
+                    Id="TareaId"
+                    @bind-Value="@Cita2.TareaId"
+                  >
+                  <option value="0">--Seleccione Tarea--</option>
+                      @foreach (var item in tareas)
+                     {
+                        if (item.Id == Cita2.TareaId) 
+                        { <option selected value="@item.Id">@item.Descripcion</option> } 
+                        else
+                        { <option value="@item.Id">@item.Descripcion</option> }
+                     }
+                 </InputSelectNumber>
+                        <ValidationMessage For="@(()=>Cita2.TemaId)" />
+                </td>
+            </tr>
+
 
             <tr>
                 <td >
@@ -163,7 +183,28 @@
                  </InputSelectNumber>
                         <ValidationMessage For="@(()=>Cita1.TemaId)" />
                  </td>
+
                 </tr>
+                <tr>
+                    <td >
+
+                      <InputSelectNumber placeholder="TareaId"  class="form-control" 
+                        Id="TareaId"
+                        @bind-Value="@Cita2.TareaId"
+                      >
+                      <option value="0">--Seleccione Tarea--</option>
+                          @foreach (var item in tareas)
+                         {
+                            if (item.Id == Cita2.TareaId) 
+                            { <option selected value="@item.Id">@item.Descripcion</option> } 
+                            else
+                            { <option value="@item.Id">@item.Descripcion</option> }
+                         }
+                     </InputSelectNumber>
+                            <ValidationMessage For="@(()=>Cita2.TemaId)" />
+                    </td>
+                </tr>
+
                <tr><td  class="col-sm-12 col-md-12 col-lg-12">
                  <InputSelectNumber placeholder="IdImportancia"  class="form-control" 
                     Id="IdImportancia"
@@ -258,6 +299,7 @@
         <th>Fecha</th>
         <th>Hora</th>
         <th>Tema</th>
+        <th>Tarea</th>
         <th>Importancia</th>
         <th>Notas</th>
     </tr>
@@ -302,6 +344,12 @@
                                <td>
                                 @if(@item.TemaId != null){
                                      @temas.Where(x => x.Id == item.TemaId).FirstOrDefault().Descripcion
+                                }
+
+                                </td>
+                               <td>
+                                @if(@item.TareaId != null){
+                                     @tareas.Where(x => x.Id == item.TareaId).FirstOrDefault().Descripcion
                                 }
 
                                 </td>

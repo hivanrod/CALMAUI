@@ -3,6 +3,12 @@
 <PageTitle>Dia - Calendario</PageTitle>
 <h3 class="h3 text-center" style="cursor:pointer" @onclick="@(() => loadCitasFecha(hoy))">Vista Diaria - Hoy</h3>
 
+@{
+    // HECHO : Se pusieron las columnas en títulos y se estan signando a los bucles. 8-nov-2022.
+// TODO : Seguir poniendo en listado general, tema de tareas y tema de citas. 8-nov-2022.
+}
+
+
 <div class="card">
     <div class="card-header">@*Now:@DateTime.Now.Date - @fecha*@
         <div class="h2 text-center" >@*fecha:@Convert.ToDateTime(fecha).Date*@
@@ -17,9 +23,11 @@
     <div class="card-body">
         <table class="table table-warning">
             <tr class="bg-black text-light">
+                <th>Tarea (Periodo)</th>
+                <th>Tema</th>
                 <th>Hora</th>
                 <th>Cita (Día)</th>
-                <th>Tarea (Periodo)</th>
+                <th>Tema</th>
             </tr>
 
             @{
@@ -71,65 +79,6 @@
                     ClassHora = "bg-dark";
                 }*@
                 <tr class="@ClassHora">
-                <td>
-                    <div>
-                            @hora
-                            @*                            //- @(horaactual) - @(horaaplica) - @i
-                        @Horas[i] - @(horaactual) - @(horaaplica) - @i
-*@                    </div>
-                </td>
-                <td>
-                       @if(citas != null)
-                        {
-                            var cit = citas.Where(x => x.Hora == i);
-                            @if(cit.FirstOrDefault() != null)
-                            {
-                                @foreach (var item2 in cit)
-                                {
-                                    <div>
-                                        @if (item2.Verificado)
-                                        {
-                                            <span class="oi oi-check"></span>
-                                             @(" ");
-                                        }
-                                        else
-                                        {
-                                            @(" - ");
-                                        }
-                                        @item2.Descripcion.ToString()
-                                        @if(!String.IsNullOrEmpty(@item2.Notas))
-                                        {
-                                            @(" (" + @item2.Notas + ")"); 
-                                        }
-                                        @if(!String.IsNullOrEmpty(@item2.TemaId.ToString()))
-                                        {
-                                            <strong>&nbsp;Tema:</strong>
-                                            @(" (" + @temas.Where(x => x.Id == item2.TemaId).FirstOrDefault().Descripcion  + ")"); 
-                                        }
-                                    </div>
-                                    <div class="">+</div>
-
-                                }
-                            }
-                            else
-                            {
-                                //if (bolcrea && i == i2-1)
-                                if (bolcrea)
-                                {
-                                        <div class="container-fluid">- <input type="text" class="form-control" value="nueva cita @i2" /></div> 
-                                }
-                            <div class="" @onclick="(() => AgregaCita(i))">+</div>
-@*                                <div>&nbsp;</div>
-*@                            }
-                        }
-                        else
-                        {
-                            <div>
-                                No hay Citas
-                            </div>
-                        }
-                </td>
-                <td>
 
                        @if(tareas != null)
                         {
@@ -138,6 +87,7 @@
                             {
                                 @foreach (var item3 in tar)
                                 {
+                                <td>
                                     <div>
                                                                           
                                         @if (item3.Verificado)
@@ -187,58 +137,137 @@
                                             if (Convert.ToDateTime(item3.FechaFinaliza).Date == Convert.ToDateTime(DateTime.Now.Date.AddDays(1)))
                                             {
                                                 //fecha2 = "MAÑANA";
-                                                           @(" ")
-                                                            <strong>Fin:<span class="bg-dark text-light h4">(MAÑANA)</span></strong>
+                                                                   @(" ")
+                                                                    <strong>Fin:<span class="bg-dark text-light h4">(MAÑANA)</span></strong>
                                             }
                                             else
                                             {
                                                 if (Convert.ToDateTime(item3.FechaFinaliza).Date == Convert.ToDateTime(DateTime.Now.Date))
                                                 {
                                                 //    fecha2 = "HOY";
-                                                           @(" ")
-                                                            <strong>Fin:<span class="bg-dark text-light h4">(HOY)</span></strong>
+                                                                   @(" ")
+                                                                    <strong>Fin:<span class="bg-dark text-light h4">(HOY)</span></strong>
 
                                                 }
                                                 else
                                                 {
-                                                            @(" ")
-                                                            <strong>Fin:
-                                                                @("(" + fecha2 + ")")
-                                                            </strong>
+                                                                    @(" ")
+                                                                    <strong>Fin:
+                                                                        @("(" + fecha2 + ")")
+                                                                    </strong>
                                                 }
                                             }
                                             if(!String.IsNullOrEmpty(@item3.Notas))
                                             {
-                                                @(" (" + @item3.Notas + ")")
+                                                        @(" (" + @item3.Notas + ")")
                                             }
-                                            @if(!String.IsNullOrEmpty(@item3.TemaId.ToString()))
-                                            {
-                                                <strong>&nbsp;Tema:</strong>
-                                                @(" (" + @temas.Where(x => x.Id == item3.TemaId).FirstOrDefault().Descripcion  + ")"); 
-                                            }
-
-                                       // }
-                                       // 
-                                       //  
                                        }
+                                     </div> 
+                                     </td>
+                                     <td>
+                                     <div>
+                                        @if (!String.IsNullOrEmpty(@item3.TemaId.ToString()))
+                                        {
+                                            <strong>&nbsp;Tema:</strong>
+                                            @(" (" + @temas.Where(x => x.Id == item3.TemaId).FirstOrDefault().Descripcion + ")")
+                                            ;
+                                        }
+
                                     </div>
+                                    </td>
+                                    
+                                       // VOY : poniendo los td en tabla
+                                        
                                }
                             }
                             else
                             {
-                                <div>&nbsp;</div>
+                                <td colspan="2">
+                                    <div>&nbsp;</div>
+                                </td>
                             }
                         }
                         else
                         {
+                            <td colspan="2">
                             <div>
                                 No hay Tareas
-                            </div>
+                            </div></td>
                         }
 
 
 
-                </td>
+                    <td>
+                        <div>
+                            @hora
+                            @*                            //- @(horaactual) - @(horaaplica) - @i
+                        @Horas[i] - @(horaactual) - @(horaaplica) - @i
+                        *@
+                        </div>
+                    </td>
+
+                    <td>
+                        @if (citas != null)
+                        {
+                            var cit = citas.Where(x => x.Hora == i);
+                            @if (cit.FirstOrDefault() != null)
+                            {
+                                @foreach (var item2 in cit)
+                                {
+                                    <div>
+                                        @if (item2.Verificado)
+                                        {
+                                            <span class="oi oi-check"></span>
+                                            @(" ")
+                                            ;
+                                        }
+                                        else
+                                        {
+                                            @(" - ")
+                                            ;
+                                        }
+                                        @item2.Descripcion.ToString()
+                                        @if (!String.IsNullOrEmpty(@item2.Notas))
+                                        {
+                                            @(" (" + @item2.Notas + ")")
+                                            ;
+                                        }
+                                       
+                                    </div>
+                                    <div>
+                                        @if (!String.IsNullOrEmpty(@item2.TemaId.ToString()))
+                                        {
+                                            <strong>&nbsp;Tema:</strong>
+                                            @(" (" + @temas.Where(x => x.Id == item2.TemaId).FirstOrDefault().Descripcion + ")")
+                                            ;
+                                        }
+                                    </div>
+                                    <div class="">+</div>
+
+                                }
+                            }
+                            else
+                            {
+                                //if (bolcrea && i == i2-1)
+                                if (bolcrea)
+                                {
+                                    <div class="container-fluid">- <input type="text" class="form-control" value="nueva cita @i2" /></div>
+                                }
+                                <div class="" @onclick="(() => AgregaCita(i))">+</div>
+                                @*                                <div>&nbsp;</div>
+                    *@                            }
+                        }
+                        else
+                        {
+                            <div>
+                                No hay Citas
+                            </div>
+                            <div>
+                                No hay Citas
+                            </div>
+                        }
+                    </td>
+
                 </tr>
                 @if (i<14){ i += 1; }
             }

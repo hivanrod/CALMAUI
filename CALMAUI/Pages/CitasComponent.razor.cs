@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using CALMAUI.Services;
+using System.Linq;
 
 namespace CALMAUI.Pages
 {
@@ -17,6 +18,8 @@ namespace CALMAUI.Pages
         PrioridadesServices prioridadesServices { get; set; }
         [Inject]
         TemasServices temasServices { get; set; }
+        [Inject]
+        TareasServices tareasServices { get; set; }
         [Parameter]
         public object submit { get; set; }
         [Parameter]
@@ -27,6 +30,8 @@ namespace CALMAUI.Pages
         public Tema tema { get; set; }
         [Parameter]
         public Tema[] temas { get; set; }
+        [Parameter]
+        public Tarea[] tareas { get; set; }
         [Parameter]
         public Prioridad[] Prio { get; set; }
         // Update
@@ -52,7 +57,8 @@ namespace CALMAUI.Pages
             Compras = 0,
             IdUsuario = 0,
             UsuarioId = 1,
-            TemaId = 0
+            TemaId = 0,
+            TareaId = 0
         };
         // Insert
         [Parameter]
@@ -77,7 +83,8 @@ namespace CALMAUI.Pages
             //  Compras = 0,
             //  IdUsuario = 0,
             UsuarioId = 1,
-            TemaId = 0
+            TemaId = 0,
+            TareaId = 0
         };
         [Parameter] public int exis { get; set; } = 250;
         [Parameter] public int ye { get; set; } = 250;
@@ -99,6 +106,7 @@ namespace CALMAUI.Pages
             Prio = await prioridadesServices.GetPrioridadesAsync();
             //Prio = await prioridadesServices.GetPrioridadesCitaAsync();
             temas = await temasServices.GetTemasAsync();
+            tareas = await tareasServices.GetTareasActivasAsync();
             CitaContext = new EditContext(Cita1);
 
         }
