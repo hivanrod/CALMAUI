@@ -6,6 +6,9 @@ namespace CALMAUI.Pages
 {
     public class DiaComponentBase : ComponentBase
     {
+
+        [Inject]
+        public NavigationManager navigation { get; set; }
         [Inject]
         public CitasServices citasServices { get; set; }
         [Inject]

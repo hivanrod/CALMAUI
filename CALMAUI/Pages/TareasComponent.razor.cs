@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using CALMAUI.Services;
+using System;
 
 namespace CALMAUI.Pages
 {
@@ -23,6 +24,11 @@ namespace CALMAUI.Pages
         public Cita cita { get; set; }
         [Parameter]
         public Cita[] citastodas { get; set; }
+        [Parameter]
+        public string? accion { get; set; }
+        [Parameter]
+        public string? i { get; set; }
+
         [Parameter]
         public Tarea tarea { get; set; }
         [Parameter]
@@ -119,6 +125,44 @@ namespace CALMAUI.Pages
             //Prio = Importancia; //await prioridadesServices.GetPrioridadesCitaAsync();
             temas = await temasServices.GetTemasAsync();
             TareaContext = new EditContext(Tarea1);
+
+            if (accion != null)
+            {
+                if (accion.Length > 1)
+                {
+                    switch (accion)
+                    {
+                        case "add":
+                            //navigation.NavigateTo("/citas/" + accion.ToString() + "/" + i.ToString() );
+                            Add();
+                            //mode= MODE.Add;
+                            //var cuant = int(i);
+                            //tareas.H.Hora = Horas.IndexOf(i);
+                            break;
+
+                        case "edit":
+                            //navigation.NavigateTo("/citas/" + accion.ToString() + "/" + i.ToString() );
+                            if (i != null)
+                            {
+
+                                //Cita1.Id = Int16.Parse(i);
+                                //await load();
+                                await Show(i);
+
+                                //mode = MODE.EditDelete;
+                                //var cuant = int(i);
+                                //Cita2.Hora = Horas.IndexOf(i);
+                            }
+
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+
+
 
         }
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using CALMAUI.Services;
 using System.Linq;
+using System.Data;
 
 namespace CALMAUI.Pages
 {
@@ -11,6 +12,9 @@ namespace CALMAUI.Pages
 
     public class CitasComponentBase : ComponentBase
     {
+
+        [Inject]
+        NavigationManager navigation { get; set; }
         [Inject]
         CitasServices citasServices { get; set; }
 
@@ -24,6 +28,10 @@ namespace CALMAUI.Pages
         public object submit { get; set; }
         [Parameter]
         public Cita cita { get; set; }
+        [Parameter]
+        public string? accion { get; set; }
+        [Parameter]
+        public string? i { get; set; }
         [Parameter]
         public Cita[] citas { get; set; }
         [Parameter]
@@ -91,8 +99,8 @@ namespace CALMAUI.Pages
         public enum MODE { None, List, Add, EditDelete };
         public MODE mode = MODE.List;
 
-        public List<string> Horas = new List<string>(new string[] { "MADRUGADA", "7:00AM", "8:00AM", "9:00AM", "10:00AM", "11:00AM", "12:00M", "1:00PM", "2:00PM", "3:00PM", "4:00PM", "5:00PM", "6:00PM", "NOCHE" });
-        public List<string> Importancia = new List<string>(new string[] { "ALTA IMPORTANCIA", "MEDIA IMPORTANCIA", "BAJA IMPORTANCIA" });
+        public List<string> Horas = new(new string[] { "MADRUGADA", "7:00AM", "8:00AM", "9:00AM", "10:00AM", "11:00AM", "12:00M", "1:00PM", "2:00PM", "3:00PM", "4:00PM", "5:00PM", "6:00PM", "NOCHE" });
+        public List<string> Importancia = new(new string[] { "ALTA IMPORTANCIA", "MEDIA IMPORTANCIA", "BAJA IMPORTANCIA" });
 
         protected override async Task OnInitializedAsync()
         {
@@ -108,6 +116,41 @@ namespace CALMAUI.Pages
             temas = await temasServices.GetTemasAsync();
             tareas = await tareasServices.GetTareasActivasAsync();
             CitaContext = new EditContext(Cita1);
+            if (accion != null)
+            {
+                if (accion.Length > 1) 
+                {
+                    switch (accion)
+                    {
+                        case "add":
+                            //navigation.NavigateTo("/citas/" + accion.ToString() + "/" + i.ToString() );
+                            Add();
+                            //mode= MODE.Add;
+                            //var cuant = int(i);
+                            Cita2.Hora = Horas.IndexOf(i);
+                            break;
+
+                        case "edit":
+                            //navigation.NavigateTo("/citas/" + accion.ToString() + "/" + i.ToString() );
+                            if (i != null)
+                            {
+
+                                //Cita1.Id = Int16.Parse(i);
+                                //await load();
+                                await Show(i);
+
+                                //mode = MODE.EditDelete;
+                                //var cuant = int(i);
+                                //Cita2.Hora = Horas.IndexOf(i);
+                            }
+
+                            break;
+                        
+                        default:
+                            break;
+                    }
+                }
+            }
 
         }
         protected void Listar()
@@ -182,7 +225,7 @@ namespace CALMAUI.Pages
             await citasServices.DeleteCitasAsync(id);
             ClearFields();
             StateHasChanged();
-            await load();
+            //await load();
             mode = MODE.List;
         }
 

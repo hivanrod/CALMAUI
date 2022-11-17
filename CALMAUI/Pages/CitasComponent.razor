@@ -1,4 +1,4 @@
-﻿@page "/citas"
+﻿@page "/citas/{accion?}/{i?}"
 @inherits CitasComponentBase
 <h3>Citas Calendario  (@if(citas != null){ @citas.Count().ToString(); })</h3>
     <button @onclick="@Add" class="btn btn-success">Adiciona Cita</button>
@@ -11,7 +11,7 @@
         <table class="col-sm-12 col-md-12 col-lg-12">
             <tr class="bg-dark rounded-circle">
                 <th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2"
-                @onclick="@Cierra" style="cursor:pointer;">Crear Cita<span class="float-end text-right badge badge-dark">X</span>
+                @onclick="@Cierra" style="cursor:pointer;">Crear Cita @accion - @i <span class="float-end text-right badge badge-dark">X</span>
             </th></tr>
             <tr>
                 <td >
@@ -208,12 +208,17 @@
                <tr><td  class="col-sm-12 col-md-12 col-lg-12">
                  <InputSelectNumber placeholder="IdImportancia"  class="form-control" 
                     Id="IdImportancia"
-                    @bind-Value="@Cita1.IdImportancia"
-                  >
+                                       @bind-Value="@Cita2.IdImportancia">
                   <option value="0">--Seleccione Importancia--</option>
                       @for (var i = 0; i < Importancia.Count; i++)
                      {
-                        if (i == Cita1.IdImportancia) { <option selected value="@i">@Importancia[i]</option> } else { <option value="@i">@Importancia[i]</option> }
+                        if (i == Cita1.IdImportancia)
+                        { 
+                            <option selected value="@i">@Importancia[i]</option> 
+                        } else
+                        { 
+                            <option value="@i">@Importancia[i]</option> 
+                        }
                      }
                  </InputSelectNumber>
                         <ValidationMessage For="@(()=>Cita1.IdImportancia)" />
@@ -233,8 +238,8 @@
                                             <option>--Seleccione Hora--</option>
                                             @for (var i = 0; i < Horas.Count; i++)
                                                 {
-                                                    if (i == Cita1.Hora) 
-                                                    {
+                                            if (i == Cita1.Hora)
+                                            {
                                                         <option selected value="@i">@Horas[i].ToString()</option>
                                                     }
                                                     else { 
