@@ -33,6 +33,8 @@ namespace CALMAUI.Pages
         [Parameter]
         public string? i { get; set; }
         [Parameter]
+        public string? fechaviene { get; set; }
+        [Parameter]
         public Cita[] citas { get; set; }
         [Parameter]
         public Tema tema { get; set; }
@@ -123,27 +125,17 @@ namespace CALMAUI.Pages
                     switch (accion)
                     {
                         case "add":
-                            //navigation.NavigateTo("/citas/" + accion.ToString() + "/" + i.ToString() );
                             Add();
-                            //mode= MODE.Add;
-                            //var cuant = int(i);
                             Cita2.Hora = Horas.IndexOf(i);
+                            Cita2.Fecha = Convert.ToDateTime(fechaviene.Replace("-","/"));
                             break;
-
                         case "edit":
-                            //navigation.NavigateTo("/citas/" + accion.ToString() + "/" + i.ToString() );
                             if (i != null)
                             {
-
-                                //Cita1.Id = Int16.Parse(i);
-                                //await load();
                                 await Show(i);
-
-                                //mode = MODE.EditDelete;
-                                //var cuant = int(i);
-                                //Cita2.Hora = Horas.IndexOf(i);
+                                Cita1.Hora= Horas.IndexOf(i);   
+                                //Cita1.Fecha = Convert.ToDateTime(fechaviene.Replace("-", "/"));
                             }
-
                             break;
                         
                         default:
@@ -179,8 +171,10 @@ namespace CALMAUI.Pages
             //prioridad = Prio;
             await citasServices.InsertCitasAsync(Cita2);
             ClearFields();
-            await load();
-            mode = MODE.List;
+            //await load();
+            //mode = MODE.List;
+            navigation.NavigateTo("/");
+
         }
 
         protected void ClearFields()
@@ -209,6 +203,7 @@ namespace CALMAUI.Pages
         protected void Add()
         {
             ClearFields();
+            accion = "add";
             mode = MODE.Add;
         }
 
@@ -216,8 +211,10 @@ namespace CALMAUI.Pages
         {
             await citasServices.UpdateCitasAsync(Cita1.Id.ToString(), Cita1);
             cita = Cita1;
-            await load();
-            mode = MODE.List;
+            //await load();
+            //mode = MODE.List;
+            navigation.NavigateTo("/");
+
         }
 
         protected async Task Delete(string id)
@@ -226,7 +223,9 @@ namespace CALMAUI.Pages
             ClearFields();
             StateHasChanged();
             //await load();
-            mode = MODE.List;
+            //mode = MODE.List;
+            navigation.NavigateTo("/");
+
         }
 
         public async Task OnElementClick(MouseEventArgs e)

@@ -1,5 +1,6 @@
-﻿@page "/citas/{accion?}/{i?}"
+﻿@page "/citas/{accion?}/{fechaviene?}/{i?}"
 @inherits CitasComponentBase
+
 <h3>Citas Calendario  (@if(citas != null){ @citas.Count().ToString(); })</h3>
     <button @onclick="@Add" class="btn btn-success">Adiciona Cita</button>
 @if (mode == MODE.Add)
@@ -11,7 +12,7 @@
         <table class="col-sm-12 col-md-12 col-lg-12">
             <tr class="bg-dark rounded-circle">
                 <th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2"
-                @onclick="@Cierra" style="cursor:pointer;">Crear Cita @accion - @i <span class="float-end text-right badge badge-dark">X</span>
+                @onclick="@Cierra" style="cursor:pointer;">Crear Cita @accion - @fechaviene - @i <span class="float-end text-right badge badge-dark">X</span>
             </th></tr>
             <tr>
                 <td >
@@ -161,7 +162,8 @@
     <EditForm EditContext="CitaEditContext" OnSubmit="@Update" >
         <DataAnnotationsValidator />
         <table class="col-sm-12 col-md-12 col-lg-12">
-            <tr class="bg-dark rounded-circle"><th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2" @onclick="@Cierra" style="cursor:pointer;">Editar Cita
+            <tr class="bg-dark rounded-circle"><th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2" 
+                @onclick="@Cierra" style="cursor:pointer;">Editar Cita - @accion - @fechaviene - @i
                <span class="float-end text-right badge badge-dark">X</span>
             </th></tr>
             <tr><td  class="col-sm-12 col-md-12 col-lg-12" >

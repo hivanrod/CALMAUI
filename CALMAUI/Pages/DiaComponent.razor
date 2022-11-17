@@ -38,27 +38,46 @@
                 horaactual = DateTime.Now.Hour;
                 ClassHora = "";
                 i2 += 1;
+                //if (horaactual.ToString() == hora.ToString())
+                var nhora = hora.ToString().Split(":");
+                hact = Convert.ToInt16(horaactual);
+                if (hact > 12)
+                {
+                    hact -= 12;
+                }
 
+                if (nhora.Count() > 0 && i2 > 0 && i2 < 13)
+                {
+                    h = Convert.ToInt16(nhora[0].ToString());
+                    if (h > 12)
+                    {
+                        h -= 12;
+                    }
+                    if (h.ToString() == hact.ToString())
+                    {
+                        ClassHora = "bg-secondary text-white rounded";
+                    }
+                }
                 <tr>
                 <td>
-                        <div class="@ClassHora container-fluid">
+                        <div class="@ClassHora  tex container-fluid">
                         @hora 
-                        <div class="btn btn-link " @onclick="@(() => navigation.NavigateTo("/citas/add/"+hora))">
+                            <div class="btn btn-link @ClassHora" @onclick="@(() => navigation.NavigateTo("/citas/add/"+fecha.Replace("/","-").ToString()+"/"+hora))">
                                 + 
                             </div>
 
                     </div>
                     </td>
 
-                    <td>
+                    <td class="@ClassHora">
                         @if (citas != null)
                         {
-                            var cit = citas.Where(x => x.Hora == i);
+                            var cit = citas.Where(x => x.Hora == i).OrderBy(x => x.IdImportancia);
                             @if (cit.FirstOrDefault() != null)
                             {
                                 @foreach (var item2 in cit)
                                 {
-                                    <div @onclick="@(() => navigation.NavigateTo("/citas/edit/"+item2.Id))">
+                                    <div class="@ClassHora" style="cursor:pointer" @onclick="@(() => navigation.NavigateTo("/citas/edit/"+fecha.Replace("/","-").ToString()+"/"+item2.Id))">
                                         @if (item2.Verificado)
                                         {
                                             <span class="oi oi-check"></span>
@@ -97,7 +116,7 @@
                                 //if (bolcrea && i == i2-1)
                                 if (bolcrea)
                                 {
-                                    <div class="container-fluid">- <input type="text" class="form-control" value="nueva cita @i2" /></div>
+                                    <div class="container-fluid @ClassHora">- <input type="text" class="form-control" value="nueva cita @i2" /></div>
                                 }
                             }
                         }
@@ -108,17 +127,16 @@
                             </div>
                         }
                     </td>
-                    <td>
+                    <td class="@ClassHora">
 
                         @if (tareas != null)
                         {
-                            var tar = tareas.Where(x => x.HoraInicio == i);
+                            var tar = tareas.Where(x => x.HoraInicio == i).OrderBy(x => x.IdImportancia);
                             @if (tar.FirstOrDefault() != null)
                             {
                                 @foreach (var item3 in tar)
                                 {
-                                    <div @onclick="@(() => navigation.NavigateTo("/tareas/edit/"+item3.Id))">
-
+                                    <div class="@ClassHora" style="cursor:pointer" @onclick="@(() => navigation.NavigateTo("/tareas/edit/" +fecha.Replace("/","-").ToString() +"/" + item3.Id))">
                                         @if (item3.Verificado)
                                         {
                                             <span class="oi oi-check"></span>
@@ -127,13 +145,10 @@
                                         }
                                         else
                                         {
-                                            @(" - ")
-                                            ;
+                                            @(" - ");
                                         }
 
-                                        @item3.Descripcion.ToString()
-
-
+                                        @item3.Descripcion.ToString();
 
                                         @{
                                             var arr_date = item3.FechaFinaliza.ToString().Split(" ");
@@ -196,9 +211,7 @@
                                                 @(" (" + @item3.Notas + ")")
                                             }
                                         }
-@*                                    </div>
-                                    <div>
-*@                                        @if (!String.IsNullOrEmpty(@item3.TemaId.ToString()))
+                                        @if (!String.IsNullOrEmpty(@item3.TemaId.ToString()))
                                         {
                                             <strong>&nbsp;Tema:</strong>
                                             @(" (" + @temas.Where(x => x.Id == item3.TemaId).FirstOrDefault().Descripcion + ")");
@@ -212,7 +225,7 @@
                             }
                             else
                             {
-                                <div>&nbsp;</div>
+                                <div class="@ClassHora">&nbsp;</div>
                             }
                         }
                         else
@@ -221,7 +234,7 @@
                                 No hay Tareas
                             </div>
                         }
-                        <div class="container-fluid" @onclick="@(() => navigation.NavigateTo("/tareas/add/"+hora))">
+                        <div class="container-fluid @ClassHora" style="cursor:pointer" @onclick="@(() => navigation.NavigateTo("/tareas/add/"+fecha.Replace("/","-").ToString()+"/"+hora))">
                             +
                         </div>
 

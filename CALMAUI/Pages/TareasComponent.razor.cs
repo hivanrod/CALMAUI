@@ -10,6 +10,9 @@ namespace CALMAUI.Pages
     public class TareasComponentBase : ComponentBase
     {
         [Inject]
+        public NavigationManager navigation { get; set; }
+
+        [Inject]
         CitasServices citasServices { get; set; }
         [Inject]
         TareasServices tareasServices { get; set; }
@@ -28,6 +31,8 @@ namespace CALMAUI.Pages
         public string? accion { get; set; }
         [Parameter]
         public string? i { get; set; }
+        [Parameter]
+        public string? fechaviene { get; set; }
 
         [Parameter]
         public Tarea tarea { get; set; }
@@ -133,7 +138,8 @@ namespace CALMAUI.Pages
                     switch (accion)
                     {
                         case "add":
-                            //navigation.NavigateTo("/citas/" + accion.ToString() + "/" + i.ToString() );
+                            Tarea2.HoraInicio = Convert.ToInt16(Horas.IndexOf(i));
+                            Tarea2.FechaInicio = Convert.ToDateTime(fechaviene.Replace("-", "/"));
                             Add();
                             //mode= MODE.Add;
                             //var cuant = int(i);
@@ -186,8 +192,10 @@ namespace CALMAUI.Pages
             //prioridad = Prio;
             await tareasServices.InsertTareasAsync(Tarea2);
             ClearFields();
-            await load("");
-            mode = MODE.List;
+            //await load("");
+            //mode = MODE.List;
+            navigation.NavigateTo("/");
+
         }
 
         protected void ClearFields()
@@ -216,36 +224,43 @@ namespace CALMAUI.Pages
         protected void Add()
         {
             ClearFields();
+            if (accion == null)
+            {
+                accion = "add";
+            }
+            if (i == null)
+            { 
+                i = Horas[0];
+            }
             mode = MODE.Add;
         }
 
         protected async Task Update()
         {
-            //if (!String.IsNullOrEmpty(submit.ToString()))
-            //{
-            //    switch (submit)
-            //    {
-            //        case "modificar":
             await tareasServices.UpdateTareasAsync(Tarea1.Id.ToString(), Tarea1);
-            //        break;
-            //    case "borrar":
-            //        await citasServices.DeleteCitasAsync(cita.Id.ToString(), Tarea1);
-            //        break;
-            //}
-            //}
             tarea = Tarea1;
+            if (accion == null)
+            {
+                accion = "edit";
+            }
+            if (i == null)
+            {
+                i = Horas[0];
+            }
+
             //var strdate = new DateTime cita.FechaHora;
             //var arrdate = strdate.Split('/');
             //var arrdate2 = arrdate[2].Split(' ');
             //var arrdate3 = arrdate2[1].Split(':');
             //var date1 = new DateTime(Convert.ToInt32(arrdate2[0]), Convert.ToInt32(arrdate[1]), Convert.ToInt32(arrdate[0]), Convert.ToInt32(arrdate3[0]), Convert.ToInt32(arrdate3[1]), Convert.ToInt32(arrdate3[2]));
-            //var date1 = new DateTime(Convert.ToInt32(arrdate2[0]), Convert.ToInt32(arrdate[1]), Convert.ToInt32(arrdate[0]), Convert.ToInt32(arrdate3[0]), Convert.ToInt32(arrdate3[1]), Convert.ToInt32(arrdate3[2]));
             //cita.FechaHora = strdate;
             //            ClearFields();
-            await load("");
+            //await load("");
             //AddBool = false;
             //EditBool = false;
-            mode = MODE.List;
+            //mode = MODE.List;
+            //            navigation.NavigateTo("/?fecha=" + fechaviene.Replace("-", "/"));
+            navigation.NavigateTo("/");
         }
 
         protected async Task Delete(string id)
@@ -253,8 +268,9 @@ namespace CALMAUI.Pages
             await tareasServices.DeleteTareasAsync(id);
             ClearFields();
             StateHasChanged();
-            await load("");
-            mode = MODE.List;
+            //await load("");
+            //mode = MODE.List;
+            navigation.NavigateTo("/");
         }
 
         public async Task OnElementClick(MouseEventArgs e)

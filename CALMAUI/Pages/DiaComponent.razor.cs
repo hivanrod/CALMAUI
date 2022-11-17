@@ -24,6 +24,10 @@ namespace CALMAUI.Pages
         [Parameter]
         public string hoy { get; set; }
         [Parameter]
+        public Int16 h { get; set; }
+        [Parameter]
+        public Int16 hact { get; set; }
+        [Parameter]
         public int desfase { get; set; }
         [Parameter]
         public int horaactual { get; set; }
