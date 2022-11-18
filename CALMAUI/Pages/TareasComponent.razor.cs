@@ -11,6 +11,8 @@ namespace CALMAUI.Pages
     {
         [Inject]
         public NavigationManager navigation { get; set; }
+        [SupplyParameterFromQuery]
+        public string Filter { get; set; }
 
         [Inject]
         CitasServices citasServices { get; set; }
@@ -33,7 +35,8 @@ namespace CALMAUI.Pages
         public string? i { get; set; }
         [Parameter]
         public string? fechaviene { get; set; }
-
+        [Parameter]
+        public bool boltodas { get; set; }
         [Parameter]
         public Tarea tarea { get; set; }
         [Parameter]
@@ -171,6 +174,46 @@ namespace CALMAUI.Pages
 
 
         }
+
+        public async Task Todas()
+        {
+            await load("");
+            boltodas = false;
+        }
+
+        public async Task Filtro(string id, string Filtro)
+        {
+            Filter = Filtro;
+            boltodas = false;
+            //switch (Filter)
+            //{
+            //    case else : 
+
+            //                break;
+            //}
+            if (!string.IsNullOrEmpty(id))
+            {
+                tareas = await tareasServices.GettareasTemaAsync(id);
+                boltodas = true;
+            }
+            else
+            {
+                tareas = await tareasServices.GetTareasAsync();
+            }
+            //navigationManager.GetUriWithQueryParameters(
+            //    new Dictionary<string,object>
+            //    {
+            //        ["prioid"] = id
+            //    }
+            //);
+
+            //PrioridadEditContext = new EditContext(Prio2);
+
+            ////Xcursor(id);
+            //  mode = MODE.List;
+        }
+
+
 
         public async Task Show(string id)
         {

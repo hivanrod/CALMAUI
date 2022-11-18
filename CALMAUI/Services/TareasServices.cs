@@ -17,6 +17,14 @@ namespace CALMAUI.Services
             var json = await http.GetStringAsync($"{baseUrl}api/Tareas");
             return JsonConvert.DeserializeObject<Tarea[]>(json);
         }
+
+        public async Task<Tarea[]> GettareasTemaAsync(string id)
+        {
+            HttpClient http = new HttpClient();
+            var json = await http.GetStringAsync($"{baseUrl}api/Tareas/tema/{id}");
+            return JsonConvert.DeserializeObject<Tarea[]>(json);
+        }
+
         public async Task<Tarea[]> GetTareasActivasAsync()
         {
             HttpClient http = new HttpClient();

@@ -3,6 +3,11 @@
 
 <h3>Citas Calendario  (@if(citas != null){ @citas.Count().ToString(); })</h3>
     <button @onclick="@Add" class="btn btn-success">Adiciona Cita</button>
+    @if (boltodas)
+{
+    @(" - ");
+    <button @onclick="@Todas" class="btn btn-success">Lista Todas</button>
+}
 @if (mode == MODE.Add)
 {
     <EditForm  EditContext="CitaContext" OnSubmit="@Insert">
@@ -12,7 +17,7 @@
         <table class="col-sm-12 col-md-12 col-lg-12">
             <tr class="bg-dark rounded-circle">
                 <th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2"
-                @onclick="@Cierra" style="cursor:pointer;">Crear Cita @accion - @fechaviene - @i <span class="float-end text-right badge badge-dark">X</span>
+                @onclick="@Cierra" style="cursor:pointer;">Crear Cita @*@accion - @fechaviene - @i*@ <span class="float-end text-right badge badge-dark">X</span>
             </th></tr>
             <tr>
                 <td >
@@ -163,7 +168,7 @@
         <DataAnnotationsValidator />
         <table class="col-sm-12 col-md-12 col-lg-12">
             <tr class="bg-dark rounded-circle"><th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2" 
-                @onclick="@Cierra" style="cursor:pointer;">Editar Cita - @accion - @fechaviene - @i
+                @onclick="@Cierra" style="cursor:pointer;">Editar Cita @*- @accion - @fechaviene - @i*@
                <span class="float-end text-right badge badge-dark">X</span>
             </th></tr>
             <tr><td  class="col-sm-12 col-md-12 col-lg-12" >
@@ -305,7 +310,7 @@
         <th>Descripción</th>
         <th>Fecha</th>
         <th>Hora</th>
-        <th>Tema</th>
+        <th>Tema - Filtro</th>
         <th>Tarea</th>
         <th>Importancia</th>
         <th>Notas</th>
@@ -318,8 +323,10 @@
                 @foreach (var item in citas)
                 {
                     // HECHO : 01-ENE-2022 : 11.40PM : Se puso la otra tabla de Prioridad para mostrar el Nombre de la proridad y no el IdPrioridad :
-                     <tr @onclick="@(() => Show(item.Id.ToString()))">
-                                <td @onmousemove="OnElementClick">
+                    // @onclick="@(() => Show(item.Id.ToString()))"
+                    
+                    <tr >
+                        <td  @onmousemove="OnElementClick">
                                     @{
                                         var str_veri = "";
                                         var veri = item.Verificado;
@@ -327,11 +334,11 @@
                                     }
                                    <input type="checkbox" id="Verificado" checked=@veri />
                                 </td>
-                                <td @onmousemove="OnElementClick">
+                        <td @onclick="@(() => Show(item.Id.ToString()))" @onmousemove="OnElementClick">
                                     
                                     @item.Descripcion
                                 </td>
-                               <td @onmousemove="OnElementClick">
+                        <td @onclick="@(() => Show(item.Id.ToString()))" @onmousemove="OnElementClick">
                                     @{
                                         string fe2 = "";
                                         if (!String.IsNullOrEmpty(item.Fecha.ToString()))
@@ -343,12 +350,15 @@
                                     }
                                     @fe2
                                 </td>
-                               <td @onmousemove="OnElementClick">
+                        <td @onclick="@(() => Show(item.Id.ToString()))" @onmousemove="OnElementClick">
                                    @if(!String.IsNullOrEmpty(item.Hora.ToString())){
                                       @Horas[@item.Hora]
                                     }  
                                 </td>
-                               <td>
+                               <td @onclick="@(() =>
+                                    Filtro(item.TemaId.ToString(),
+                                    Filter
+                                    ))">
                                 @if(@item.TemaId != null){
                                      @temas.Where(x => x.Id == item.TemaId).FirstOrDefault().Descripcion
                                 }

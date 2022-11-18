@@ -4,6 +4,12 @@
 <h3>Tareas Calendario  (@if(tareas != null){ @tareas.Count().ToString(); })</h3>
 
    <button @onclick="@Add" class="btn btn-success">Adiciona Tarea</button>
+@if (boltodas)
+{
+    @(" - ");
+    <button @onclick="@Todas" class="btn btn-success">Lista Todas</button>
+}
+
 @if (mode == MODE.Add)
 {
     // TODO : 11-Enero-2020 5.48pm : Insertando Tarea : 
@@ -16,7 +22,7 @@
             <tr class="bg-dark rounded-circle">
                 <th class="text-center text-light rounded-sm col-sm-12 col-md-12 col-lg-12 h2"
                 @onclick="@Cierra" style="cursor:pointer;">        
-                Crear Tarea @accion.ToString() - @i.ToString()
+                Crear Tarea @*@accion.ToString() - @i.ToString()*@
                 <span class="float-end text-right badge badge-dark">X</span>
             </th></tr>
             <tr>
@@ -316,7 +322,7 @@
     <tr>
         <th>X</th>
         <th>Descripción</th>
-        <th>Tema / Cita</th>
+        <th>Tema(Filtra) / Cita</th>
         <th>Importancia</th>
         <th>Fecha Hora Inicia</th>
         <th>Fecha Hora Termina</th>
@@ -330,8 +336,8 @@
                 @foreach (var item in tareas)
                 {
                     // HECHO : 01-ENE-2022 : 11.40PM : Se puso la otra tabla de Prioridad para mostrar el Nombre de la proridad y no el IdPrioridad :
-                     <tr @onclick="@(() => Show(item.Id.ToString()))">
-                                <td @onmousemove="OnElementClick">
+                     <tr >
+                        <td  @onmousemove="OnElementClick">
                                     @{
                                         var str_veri = "";
                                         var veri = item.Verificado;
@@ -340,13 +346,17 @@
                                    <input type="checkbox" id="Verificado" checked=@veri />
                                 </td>
 
-                                <td @onmousemove="OnElementClick">
+                                <td @onclick="@(() => Show(item.Id.ToString()))" @onmousemove="OnElementClick">
                                     @item.Descripcion
                                 </td>
                                <td  @onmousemove="OnElementClick">
 @*                                   // Si TemaId no se encuentra en tabla de temas se borro.
 *@                               @if(@item.TemaId != null){
-                                       <div class="h6"><strong>Tema:</strong>
+                                       <div class="h6"
+                                            @onclick="@(() =>
+                                            Filtro(item.TemaId.ToString(),
+                                            Filter
+                                            ))"><strong>Tema:</strong>
                                            @if (temas.Where(x => x.Id == item.TemaId).FirstOrDefault() != null)
                                           {
                                         @temas.Where(x => x.Id == item.TemaId).FirstOrDefault().Descripcion

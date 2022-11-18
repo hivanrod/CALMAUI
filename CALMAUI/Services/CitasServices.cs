@@ -29,6 +29,12 @@ namespace CALMAUI.Services
             var json = await http.GetStringAsync($"{baseUrl}api/Citas/{id}");
             return JsonConvert.DeserializeObject<Cita>(json);
         }
+        public async Task<Cita[]> GetCitasTemaAsync(string id)
+        {
+            HttpClient http = new HttpClient();
+            var json = await http.GetStringAsync($"{baseUrl}api/Citas/tema/{id}");
+            return JsonConvert.DeserializeObject<Cita[]>(json);
+        }
         public async Task<Cita[]> GetCitasFechaAsync(string fecha)
         {
             var ano = Convert.ToDateTime(fecha).Year;

@@ -46,7 +46,8 @@
                     hact -= 12;
                 }
 
-                if (nhora.Count() > 0 && i2 > 0 && i2 < 13)
+                if (nhora.Count() > 0 && i2 > 0 && i2 < 13 && horaactual < 19 && horaactual > 6 &&
+                Convert.ToDateTime(fecha) == Convert.ToDateTime(DateTime.Now.Date.ToString()))
                 {
                     h = Convert.ToInt16(nhora[0].ToString());
                     if (h > 12)
@@ -59,13 +60,13 @@
                     }
                 }
                 <tr>
-                <td>
-                        <div class="@ClassHora  tex container-fluid">
+                <td style="width:max-content;">
+                        <div class="@ClassHora container-fluid w-auto">
                         @hora 
-                            <div class="btn btn-link @ClassHora" @onclick="@(() => navigation.NavigateTo("/citas/add/"+fecha.Replace("/","-").ToString()+"/"+hora))">
-                                + 
+@*                            <div style="cursor:pointer" class="@ClassHora" @onclick="@(() => navigation.NavigateTo("/citas/add/"+fecha.Replace("/","-").ToString()+"/"+hora))">
+                                <span class="oi oi-plus"></span>
                             </div>
-
+*@
                     </div>
                     </td>
 
@@ -86,12 +87,11 @@
                                         }
                                         else
                                         {
-                                            @(" - ")
+                                            <span class="oi oi-minus"></span>
+                                            @(" ")
                                             ;
                                         }
-
                                         @item2.Descripcion.ToString()
-                                        
                                         @if (!String.IsNullOrEmpty(@item2.Notas))
                                         {
                                             @(" (" + @item2.Notas + ")")
@@ -126,6 +126,10 @@
                                 No hay Citas
                             </div>
                         }
+                        <div class="container-fluid @ClassHora" style="cursor:pointer" @onclick="@(() => navigation.NavigateTo("/CITAS/add/"+fecha.Replace("/","-").ToString()+"/"+hora))">
+                            <span class="oi oi-plus"></span>
+                        </div>
+
                     </td>
                     <td class="@ClassHora">
 
@@ -137,19 +141,17 @@
                                 @foreach (var item3 in tar)
                                 {
                                     <div class="@ClassHora" style="cursor:pointer" @onclick="@(() => navigation.NavigateTo("/tareas/edit/" +fecha.Replace("/","-").ToString() +"/" + item3.Id))">
-                                        @if (item3.Verificado)
+                                        @if(item3.Verificado)
                                         {
                                             <span class="oi oi-check"></span>
-                                            @(" ")
-                                            ;
+                                            @(" ");
                                         }
                                         else
                                         {
-                                            @(" - ");
+                                            <span class="oi oi-minus"></span>
+                                            @(" ");
                                         }
-
-                                        @item3.Descripcion.ToString();
-
+                                        @item3.Descripcion.ToString()
                                         @{
                                             var arr_date = item3.FechaFinaliza.ToString().Split(" ");
                                             string fecha2;
@@ -158,11 +160,7 @@
                                                 var arr_date2 = arr_date[0].Split("/");
                                                 if (arr_date2 != null)
                                                 {
-                                                    //  #if WINDOWS
                                                     fecha2 = Mes[Convert.ToInt16(arr_date2[0]) - 1] + "/" + arr_date2[1] + "/" + arr_date2[2];
-                                                    //   #elif Android
-                                                    //       fecha2 = arr_date2[1] + "-" +Mes[Convert.ToInt16(arr_date2[0]) - 1] + "-" + arr_date2[2];
-                                                    //   #endif
                                                     // FECHA EN BLAZOR
                                                     //fecha2 = arr_date2[0] + "/" + Mes[Convert.ToInt16(arr_date2[1]) - 1] + "/" + arr_date2[2];
                                                     // Fecha MAUI windows --OK--
@@ -174,13 +172,11 @@
                                                 {
                                                     fecha2 = fecha1;
                                                 }
-
                                             }
                                             else
                                             {
                                                 fecha2 = fecha1;
                                             }
-
 
                                             if (Convert.ToDateTime(item3.FechaFinaliza).Date == Convert.ToDateTime(DateTime.Now.Date.AddDays(1)))
                                             {
@@ -235,7 +231,7 @@
                             </div>
                         }
                         <div class="container-fluid @ClassHora" style="cursor:pointer" @onclick="@(() => navigation.NavigateTo("/tareas/add/"+fecha.Replace("/","-").ToString()+"/"+hora))">
-                            +
+                            <span class="oi oi-plus"></span>
                         </div>
 
                     </td>

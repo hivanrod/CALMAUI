@@ -15,6 +15,9 @@ namespace CALMAUI.Pages
 
         [Inject]
         NavigationManager navigation { get; set; }
+        [SupplyParameterFromQuery]
+        public string Filter { get; set; }
+
         [Inject]
         CitasServices citasServices { get; set; }
 
@@ -32,6 +35,8 @@ namespace CALMAUI.Pages
         public string? accion { get; set; }
         [Parameter]
         public string? i { get; set; }
+        [Parameter]
+        public bool boltodas { get; set; }
         [Parameter]
         public string? fechaviene { get; set; }
         [Parameter]
@@ -109,13 +114,30 @@ namespace CALMAUI.Pages
             await load();
         }
 
-        public async Task load(int page = 1, int quantityPerPage = 1, string UsuarioId = "err56yh")
+        private async Task load(string Filter = "", int page = 1, int quantityPerPage = 1, string UsuarioId = "err56yh")
         {
-            citas = await citasServices.GetCitasAsync();
+            //citas = await citasServices.GetCitasAsync();
             //   Prio = Importancia;// await prioridadesServices.GetPrioridadesAsync();
             Prio = await prioridadesServices.GetPrioridadesAsync();
             //Prio = await prioridadesServices.GetPrioridadesCitaAsync();
             temas = await temasServices.GetTemasAsync();
+
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                //Filter = 167;
+                citas = await citasServices.GetCitasTemaAsync(Filter);
+                //historicoCitas = await CitasServices.GetCitasHistoricoAsync(Tema1.Id.ToString());
+                //historicoC = historicoCitas.Count().ToString();
+                //historicoTareas = await TareasServices.GetTareasHistoricoAsync(Tema1.Id.ToString());
+                //historicoT = historicoTareas.Count().ToString();
+            }
+            else
+            {
+                citas = await citasServices.GetCitasAsync();
+            }
+
+
+
             tareas = await tareasServices.GetTareasActivasAsync();
             CitaContext = new EditContext(Cita1);
             if (accion != null)
@@ -126,14 +148,20 @@ namespace CALMAUI.Pages
                     {
                         case "add":
                             Add();
-                            Cita2.Hora = Horas.IndexOf(i);
-                            Cita2.Fecha = Convert.ToDateTime(fechaviene.Replace("-","/"));
+                            if (i != null)
+                            {
+                                Cita2.Hora = Horas.IndexOf(i);
+                                if (fechaviene != null)
+                                {
+                                    Cita2.Fecha = Convert.ToDateTime(fechaviene.Replace("-", "/"));
+                                }
+                            }
                             break;
                         case "edit":
                             if (i != null)
                             {
                                 await Show(i);
-                                Cita1.Hora= Horas.IndexOf(i);   
+                                //Cita1.Hora= Horas.IndexOf(i);   
                                 //Cita1.Fecha = Convert.ToDateTime(fechaviene.Replace("-", "/"));
                             }
                             break;
@@ -145,6 +173,47 @@ namespace CALMAUI.Pages
             }
 
         }
+
+
+        public async Task Todas()
+        {
+            await load("");
+            boltodas = false;
+        }
+
+        public async Task Filtro(string id, string Filtro)
+        {
+            Filter = Filtro;
+                 boltodas = false;
+           //switch (Filter)
+            //{
+            //    case else : 
+
+            //                break;
+            //}
+            if (!string.IsNullOrEmpty(id))
+            {
+                citas = await citasServices.GetCitasTemaAsync(id);
+                boltodas = true;
+            }
+            else
+            {
+                citas = await citasServices.GetCitasAsync();
+            }
+            //navigationManager.GetUriWithQueryParameters(
+            //    new Dictionary<string,object>
+            //    {
+            //        ["prioid"] = id
+            //    }
+            //);
+
+            //PrioridadEditContext = new EditContext(Prio2);
+
+            ////Xcursor(id);
+            //  mode = MODE.List;
+        }
+
+
         protected void Listar()
         {
             ClearFields();

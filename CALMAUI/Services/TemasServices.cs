@@ -30,6 +30,16 @@ namespace CALMAUI.Services
             return JsonConvert.DeserializeObject<Tema[]>(json);
         }
 
+
+        //public async Task<Tema[]> GetTemasCitasAsync(string id)
+        //{
+        //    HttpClient http = new HttpClient();
+        //    var json = await http.GetStringAsync($"{baseUrl}api/Temas/Prioridad/{id}");
+        //    return JsonConvert.DeserializeObject<Tema[]>(json);
+        //}
+
+
+
         public async Task<HttpResponseMessage> InsertTemasAsync(Tema Tema)
         {
             var client = new HttpClient();
