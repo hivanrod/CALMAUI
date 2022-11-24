@@ -1,12 +1,15 @@
 ﻿using CALMAUI.Models;
 using Microsoft.AspNetCore.Components;
 using CALMAUI.Services;
+using Microsoft.JSInterop;
 
 namespace CALMAUI.Pages
 {
     public class DiaComponentBase : ComponentBase
     {
 
+        [Inject]
+        public IJSRuntime Js { get; set; }
         [Inject]
         public NavigationManager navigation { get; set; }
         [Inject]
@@ -22,7 +25,11 @@ namespace CALMAUI.Pages
         [Parameter]
         public string ClassHora { get; set; } = "";
         [Parameter]
+        public string ClassFocus { get; set; } = "";
+        [Parameter]
         public string hoy { get; set; }
+        [Parameter]
+        public string tarde { get; set; }
         [Parameter]
         public Int16 h { get; set; }
         [Parameter]
@@ -47,6 +54,8 @@ namespace CALMAUI.Pages
         public string dialargo { get; set; } = DateTime.Now.ToLongDateString();
         [Parameter]
         public DateTime dia { get; set; } = DateTime.Now;
+
+        protected ElementReference elementToFocus;
         //[Parameter]
         //public Int16 horas { get; set; } =
 
@@ -61,12 +70,30 @@ namespace CALMAUI.Pages
         [Parameter]
         public List<string> Mes { get; set; } = new(new string[] { "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC" });
 
+        protected override async void OnAfterRender(bool firstRender)
+        {
+            if (firstRender)
+            {
+                // await Js.InvokeVoidAsync("focusElement", "elementToFocus");
+                //await Js.InvokeVoidAsync("exampleJsFunctions", elementToFocus);
+                // await elementToFocus.FocusAsync();
+                //await Js.InvokeVoidAsync("eval", $@"document.getElementById(""elementToFocus"").focus()");
+                // await Js.InvokeVoidAsync("alert", "BIENVENIDO AL CALENDARIO!");
+                //if (elementToFocus.Element != null)
+                //    await elementToFocus.Element.Value.FocusAsync();
+                //await Js.InvokeVoidAsync("exampleJsFunctions.focusElement", elementToFocus);
+                await elementToFocus.FocusAsync();
+            }
+        }
+
         protected override async Task OnInitializedAsync()
         {
             await load(DateTime.Now.ToShortDateString());
             hoy = DateTime.Now.ToString();
             //await load();
             temas = await temasServices.GetTemasAsync();
+            await elementToFocus.FocusAsync();
+
         }
 
         public async Task load(string fecha, int page = 1, int quantityPerPage = 1, string UsuarioId = "err56yh")

@@ -130,7 +130,7 @@ namespace CALMAUI.Shared
 
         public async Task MuestraRepeticiones(int? Objeto)
         {
-            Repite = Repite == true ? Repite = false : Repite = true;
+             Repite = Repite == true ? Repite = false : Repite = true;
         }
         public async Task MuestraHistoria(int ObjetoId, int? idTipoObjeto)
         {

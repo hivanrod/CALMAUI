@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components.WebView.Maui;
-using CALMAUI.Data;
 using CALMAUI.Services;
 
 namespace CALMAUI;

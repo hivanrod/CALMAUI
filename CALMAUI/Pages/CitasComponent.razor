@@ -2,7 +2,13 @@
 @inherits CitasComponentBase
 
 <h3>Citas Calendario  (@if(citas != null){ @citas.Count().ToString(); })</h3>
-    <button @onclick="@Add" class="btn btn-success">Adiciona Cita</button>
+<div class="d-flex flex-row">
+    <button @onclick="@Add" class="btn btn-success p-3">
+        @("    ")
+        <span class="oi oi-plus"></span>
+        @("    ")
+    </button>
+</div>
     @if (boltodas)
 {
     @(" - ");
@@ -254,7 +260,7 @@
                                                     }
                                                 }
                                         </InputSelect>
-                                            <ValidationMessage For="@(()=>Cita1.Hora)" />
+                                        <ValidationMessage For="@(()=>Cita1.Hora)" />
                             </td>
                             </tr>
                             </table>
@@ -326,30 +332,28 @@
                     // @onclick="@(() => Show(item.Id.ToString()))"
                     
                     <tr >
-                        <td  @onmousemove="OnElementClick">
-                                    @{
-                                        var str_veri = "";
-                                        var veri = item.Verificado;
-                                        if (veri) { str_veri = "checked"; }
-                                    }
-                                   <input type="checkbox" id="Verificado" checked=@veri />
-                                </td>
+                        <td @onmousemove="OnElementClick">
+                            @{
+                                var str_veri = "";
+                                var veri = item.Verificado;
+                                if (veri) { str_veri = "checked"; }
+                            }
+                            <input type="checkbox" id="Verificado" checked=@veri />
+                        </td>
                         <td @onclick="@(() => Show(item.Id.ToString()))" @onmousemove="OnElementClick">
-                                    
-                                    @item.Descripcion
-                                </td>
+                            @item.Descripcion
+                        </td>
                         <td @onclick="@(() => Show(item.Id.ToString()))" @onmousemove="OnElementClick">
-                                    @{
-                                        string fe2 = "";
-                                        if (!String.IsNullOrEmpty(item.Fecha.ToString()))
-                                        {
-                                            var fe = item.Fecha.ToString().Split(" ");
-                                            fe2 = fe[0].ToString();
-                                        }
-
-                                    }
-                                    @fe2
-                                </td>
+                            @{
+                                string fe2 = "";
+                                if (!String.IsNullOrEmpty(item.Fecha.ToString()))
+                                {
+                                    var fe = item.Fecha.ToString().Split(" ");
+                                    fe2 = fe[0].ToString();
+                                }
+                            }
+                            @fe2
+                        </td>
                         <td @onclick="@(() => Show(item.Id.ToString()))" @onmousemove="OnElementClick">
                                    @if(!String.IsNullOrEmpty(item.Hora.ToString())){
                                       @Horas[@item.Hora]
@@ -362,23 +366,20 @@
                                 @if(@item.TemaId != null){
                                      @temas.Where(x => x.Id == item.TemaId).FirstOrDefault().Descripcion
                                 }
-
                                 </td>
                                <td>
                                 @if(@item.TareaId != null){
                                      @tareas.Where(x => x.Id == item.TareaId).FirstOrDefault().Descripcion
                                 }
-
                                 </td>
                                 <td>
-                                   
-                             @if(@item.IdImportancia != null){
-                                 @Importancia[@item.IdImportancia]
-                            }
+                                 @if(@item.IdImportancia != null){
+                                     @Importancia[@item.IdImportancia]
+                                }
                                </td>
-                                  <td>
+                                <td>
                                     @item.Notas 
-                                </td>
+                               </td>
                   </tr>
                 }
 

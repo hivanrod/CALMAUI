@@ -1,7 +1,13 @@
 ﻿@inherits PrioridadesComponentBase  
 @page "/prioridades"
 <h3>Prioridades Personales  (@if(prioridades != null){ @prioridades.Count().ToString(); })</h3>
-    <button @onclick="@Add" class="btn btn-success">Adiciona Prioridad</button>
+<div class="d-flex flex-row">
+    <button @onclick="@Add" class="btn btn-success p-3">
+        @("    ")
+        <span class="oi oi-plus"></span>
+        @("    ")
+    </button>
+</div>
 @if (mode == MODE.Add)
 {
     // HECHO : 30-Dic-2021 12-56-pm : Insertando entrada de creación : 

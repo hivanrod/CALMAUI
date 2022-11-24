@@ -1,11 +1,17 @@
 ﻿using CALMAUI.Models;
 using Microsoft.AspNetCore.Components;
 using CALMAUI.Services;
+using Microsoft.JSInterop;
 
 namespace CALMAUI.Pages
 {
     public class MesComponentBase : ComponentBase
     {
+        [Inject]
+        public IJSRuntime Js { get; set; }
+        [Inject]
+        public NavigationManager navigation { get; set; }
+
         [Inject]
         public CitasServices citasServices { get; set; }
         [Inject]
@@ -27,25 +33,47 @@ namespace CALMAUI.Pages
         public string hoy { get; set; }
         [Parameter]
         public int mes { get; set; }
+        [Parameter]
+        public int dia { get; set; }
+        [Parameter]
+        public int ano { get; set; }
         public int diasemanainicia { get; set; }
         public int diasemanatermina { get; set; }
         public List<string> Mes = new List<string>(new string[] { "", "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" });
+        public List<string> Semana = new List<string>(new string[] { "", "1", "2", "3", "4", "5" });
 
 
         protected override async Task OnInitializedAsync()
         {
             await load(DateTime.Now.ToShortDateString());
+            hoy = DateTime.Now.Date.ToString();
             //hoy = DateTime.Now.ToString();
             ////await load();
             //temas = await temasServices.GetTemasAsync();
-
         }
 
+        public static bool IsDateTime(string txtDate)
+        {
+            DateTime tempDate;
+            return DateTime.TryParse(txtDate, out tempDate);
+        }
+        public async Task Navigate(string url)
+        {
+            navigation.NavigateTo(url);
+        }
         public async Task load(string fecha, int page = 1, int quantityPerPage = 1, string UsuarioId = "err56yh")
         {
             this.fecha = fecha;
-
-            diasemanainicia = (int)Convert.ToDateTime(fecha).DayOfWeek;
+            var d = Convert.ToDateTime(fecha.ToString()).Month.ToString() + "/01/" + Convert.ToDateTime(fecha.ToString()).Year.ToString();
+            //var d = "01/" + Convert.ToDateTime(fecha.ToString()).Month.ToString() + "/" +  Convert.ToDateTime(fecha.ToString()).Year.ToString();
+            diasemanainicia = (int)Convert.ToDateTime(d).DayOfWeek;
+            mes = Convert.ToDateTime(fecha.ToString()).Month;
+            ano = Convert.ToDateTime(fecha.ToString()).Year;
+            if (diasemanainicia == 0)
+            {
+                diasemanainicia = 7;
+            }
+            //diasemanainicia = diasemanainicia == 0 ? diasemanainicia = 7 : diasemanainicia = (int)Convert.ToDateTime(d).DayOfWeek;
 
             if (!string.IsNullOrEmpty(fecha))
             {
@@ -79,7 +107,16 @@ namespace CALMAUI.Pages
         public async Task loadCitasFecha(string fecha, int? page = 1, int? quantityPerPage = 1, string UsuarioId = "err56yh")
         {
             this.fecha = fecha;
-            diasemanainicia = (int)Convert.ToDateTime(fecha).DayOfWeek;
+            var d = Convert.ToDateTime(fecha.ToString()).Month.ToString() + "/01/" + Convert.ToDateTime(fecha.ToString()).Year.ToString();
+            //var d = "01/" + Convert.ToDateTime(fecha.ToString()).Month.ToString() + "/" +  Convert.ToDateTime(fecha.ToString()).Year.ToString();
+            diasemanainicia = (int)Convert.ToDateTime(d).DayOfWeek;
+            mes = Convert.ToDateTime(fecha.ToString()).Month;
+            ano = Convert.ToDateTime(fecha.ToString()).Year;
+
+            if (diasemanainicia == 0)
+            {
+                diasemanainicia = 7;
+            }
 
             if (!string.IsNullOrEmpty(fecha))
             {

@@ -77,6 +77,7 @@ namespace CALMAUI.Pages
             //UsuarioId = 1,
             //TemaId = 0,
             //CitaId = 0
+            IdTareaPadre= 0,
         };
         // --------Insert-----------
         [Parameter]
@@ -105,6 +106,7 @@ namespace CALMAUI.Pages
             //UsuarioId = 1,
             //TemaId = 0,
             //CitaId= 0
+            IdTareaPadre = 0
         };
         [Parameter] public int exis { get; set; } = 250;
         [Parameter] public int ye { get; set; } = 250;
@@ -324,6 +326,12 @@ namespace CALMAUI.Pages
             ye = (int)e.ClientY - 100;
 
             // now you can work with the position relative to the element.
+        }
+        protected void Diario()
+        {
+            ClearFields();
+            navigation.NavigateTo("/"); 
+            //mode = MODE.List;
         }
         protected void Listar()
         {

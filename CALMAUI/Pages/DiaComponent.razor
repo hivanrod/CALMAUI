@@ -1,4 +1,5 @@
-﻿@inherits DiaComponentBase
+﻿@page "/dia/{fecha?}"
+@inherits DiaComponentBase
 
 <PageTitle>Dia - Calendario</PageTitle>
 <h3 class="h3 text-center" style="cursor:pointer" @onclick="@(() => loadCitasFecha(hoy))">Vista Diaria - Hoy</h3>
@@ -11,13 +12,13 @@
 
 <div class="card">
     <div class="card-header">@*Now:@DateTime.Now.Date - @fecha*@
-        <div class="h2 text-center" >@*fecha:@Convert.ToDateTime(fecha).Date*@
+        <div class="h2 text-center p-3" >@*fecha:@Convert.ToDateTime(fecha).Date*@
             <div class="float-start" style="cursor:pointer" @onclick="@(() => loadCitasFecha(fecha1))">@("<<")</div>
             @dialargo
             @if (Convert.ToDateTime(fecha).Date == DateTime.Now.Date) { 
                 <strong>@("::" + @DateTime.Now.ToShortTimeString() + "::")</strong>
             }
-            <div class="float-end" style="cursor:pointer" @onclick="@(() => loadCitasFecha(fecha2))">@(">>")</div>    
+            <div class="float-end p-3" style="cursor:pointer" @onclick="@(() => loadCitasFecha(fecha2))">@(">>")</div>    
         </div>
     </div>
     <div class="card-body">
@@ -37,9 +38,15 @@
                 // se pone negro fondo de hora actual y día
                 horaactual = DateTime.Now.Hour;
                 ClassHora = "";
+                ClassFocus = "";
+                tarde = null;
                 i2 += 1;
                 //if (horaactual.ToString() == hora.ToString())
                 var nhora = hora.ToString().Split(":");
+                @if (nhora.Length >= 2)
+                {
+                    tarde = @nhora[1].ToString();
+                }
                 hact = Convert.ToInt16(horaactual);
                 if (hact > 12)
                 {
@@ -50,20 +57,30 @@
                 Convert.ToDateTime(fecha) == Convert.ToDateTime(DateTime.Now.Date.ToString()))
                 {
                     h = Convert.ToInt16(nhora[0].ToString());
-                    if (h > 12)
-                    {
-                        h -= 12;
-                    }
-                    if (h.ToString() == hact.ToString())
-                    {
-                        ClassHora = "bg-secondary text-white rounded";
+                    //if (tarde != null && h < 7 && tarde == "00AM")
+                    if (tarde != null)
+                        {
+                        
+                        if (h > 12)
+                        {
+                            h -= 12;
+                        }
+                        if (h.ToString() == hact.ToString())
+                        {
+                            ClassHora = "bg-secondary text-white rounded";
+                            ClassFocus = "elemetnToFocus";
+                        }
                     }
                 }
                 <tr>
                 <td style="width:max-content;">
-                        <div class="@ClassHora container-fluid w-auto">
-                        @hora 
-@*                            <div style="cursor:pointer" class="@ClassHora" @onclick="@(() => navigation.NavigateTo("/citas/add/"+fecha.Replace("/","-").ToString()+"/"+hora))">
+                        <div class="@ClassHora container-fluid w-auto" @ref="elementToFocus">
+                            @if (ClassHora.Length > 0)
+                            {
+                                //<input hidden @ref="elementToFocus" autofocus style="z-index=-1000"/>
+                            }
+                            @hora
+                            @*                            <div style="cursor:pointer" class="@ClassHora" @onclick="@(() => navigation.NavigateTo("/citas/add/"+fecha.Replace("/","-").ToString()+"/"+hora))">
                                 <span class="oi oi-plus"></span>
                             </div>
 *@
@@ -98,17 +115,13 @@
                                             ;
                                         }
                                        
-@*                                    </div>
-                                    <div>
-*@                                        @if (!String.IsNullOrEmpty(@item2.TemaId.ToString()))
+                                       @if (!String.IsNullOrEmpty(@item2.TemaId.ToString()))
                                         {
                                             <strong>&nbsp;Tema:</strong>
                                             @(" (" + @temas.Where(x => x.Id == item2.TemaId).FirstOrDefault().Descripcion + ")")
                                             ;
                                         }
                                     </div>
-                                   
-
                                 }
                             }
                             else
@@ -132,7 +145,6 @@
 
                     </td>
                     <td class="@ClassHora">
-
                         @if (tareas != null)
                         {
                             var tar = tareas.Where(x => x.HoraInicio == i).OrderBy(x => x.IdImportancia);
@@ -214,9 +226,7 @@
                                         }
 
                                     </div>
-
                                     // VOY : poniendo los td en tabla
-
                                 }
                             }
                             else
@@ -242,6 +252,7 @@
                 @if(i<14){ i += 1; }
             }
         </table>
+
     </div>
 
 </div>
