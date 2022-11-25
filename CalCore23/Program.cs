@@ -1,17 +1,22 @@
-﻿namespace CalCore23
-{
-    public class Program
-    {
-        var builder = WebApplication.CreateBuilder(args);
+using CalCore23;
+using CalCore23.Services;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-        // Add services to the container.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseWebAssemblyDebugging();
-        }
-        app.UseBlazorFrameworkFiles();
-        app.MapFallbackToFile("index.html");
-        //app.MapRazorPages(); // Remove this line.
-        app.Run();
-    }
-}
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<HeadOutlet>("head::after");
+
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+builder.Services.AddScoped<PrioridadesServices>();
+builder.Services.AddScoped<TemasServices>();
+builder.Services.AddScoped<CitasServices>();
+builder.Services.AddScoped<ContactosServices>();
+builder.Services.AddScoped<TareasServices>();
+builder.Services.AddScoped<RepeticionesServices>();
+builder.Services.AddScoped<TipoRepeticionesServices>();
+builder.Services.AddScoped<TipoObjetosServices>();
+
+
+await builder.Build().RunAsync();

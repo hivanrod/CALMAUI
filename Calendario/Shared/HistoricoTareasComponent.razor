@@ -1,0 +1,87 @@
+﻿@inherits HistoricoTareasComponentBase
+
+<div class="col-sm-12 col-md-12 col-xl-12" @onclick="@(() => MuestraHistoria_tareas(@ObjetoId,@TipoObjetoId))" style="cursor:pointer;">
+    <div class="float-md-none bg-dark  text-center text-light rounded-sm col-sm-12 col-md-12 col-xl-12 h2" >
+            <div class="col-sm-12 col-md-12 col-xl-12 text-center">
+            @if(Historia_tareas) {
+                //HistoricoT = "0";
+                @("Historial Tareas (" + HistoricoT + ")");
+                <span class="float-end text-right badge badge-dark">X</span>
+            }else{
+                if (historicoTareas != null)
+                {
+                    HistoricoT = historicoTareas.Count().ToString();
+                }
+                @("Ver Historial Tareas (" + HistoricoT + ")");
+                <span class="float-end text-right badge badge-dark"></span>
+            }
+            </div>
+    </div>
+</div>
+
+
+@*// Historia tareas
+*@
+    @if(@Historia_tareas) {
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="table table-hover">
+                    <div class="row">
+                        <div class="col-12 bg-dark text-light text-center">Historia Tareas</div>
+
+                    </div>
+                </div>
+                @if (historicoTareas != null)
+                {
+
+                    @foreach (var item in historicoTareas)
+                    {
+                      <div class="card" style="position: relative; border: dotted; background-color: #b5b5b5; padding: 20px 20px 20px 20px; z-index:1000">
+
+                        <div class="table table-bordered">
+                              <div class="row">
+                                    <div class="col-12 bg-black text-light text-center">Tarea</div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-control-plaintext col-6 text-center h3 text-light bg-secondary">@item.Descripcion</div>
+                                </div>
+                                <div class="row  bg-black text-light">
+                                    <div class="col-6 text-center">Fecha Inicio</div>
+                                    <div class="col-6 text-center">Fecha Finaliza</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6 text-center">@item.FechaInicio</div>
+                                    <div class="col-6 text-center">@item.FechaFinaliza</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 bg-black text-light text-center">Tema</div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-control-plaintext col-12  text-center">@temas.Where(x => x.Id == item.TemaId).FirstOrDefault().Descripcion</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 bg-black text-light text-center">Verificación:</div>
+                                </div>
+                               <div class="row">
+                                    <div class="col-12 hr text-center">@if (@item.Verificado) { @("Finalizada") }else{@("Por Terminar")}</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 bg-black text-light text-center">Notas</div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-control-plaintext col-12  text-center">@item.Notas</div>
+
+                                </div>
+                        </div>
+                    </div>
+                    }
+                }
+            </li>
+        </ul>
+
+
+
+} 
+

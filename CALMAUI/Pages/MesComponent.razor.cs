@@ -64,8 +64,8 @@ namespace CALMAUI.Pages
         public async Task load(string fecha, int page = 1, int quantityPerPage = 1, string UsuarioId = "err56yh")
         {
             this.fecha = fecha;
-            var d = Convert.ToDateTime(fecha.ToString()).Month.ToString() + "/01/" + Convert.ToDateTime(fecha.ToString()).Year.ToString();
-            //var d = "01/" + Convert.ToDateTime(fecha.ToString()).Month.ToString() + "/" +  Convert.ToDateTime(fecha.ToString()).Year.ToString();
+            //var d = Convert.ToDateTime(fecha.ToString()).Month.ToString() + "/01/" + Convert.ToDateTime(fecha.ToString()).Year.ToString();
+            var d = "01/" + Convert.ToDateTime(fecha.ToString()).Month.ToString() + "/" +  Convert.ToDateTime(fecha.ToString()).Year.ToString();
             diasemanainicia = (int)Convert.ToDateTime(d).DayOfWeek;
             mes = Convert.ToDateTime(fecha.ToString()).Month;
             ano = Convert.ToDateTime(fecha.ToString()).Year;

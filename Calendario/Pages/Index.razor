@@ -1,0 +1,33 @@
+﻿@page "/{fecha?}"
+@inherits IndexBase
+
+<PageTitle>Calendario</PageTitle>
+
+@{
+    // TODO : 29-Dic-2021 6.04pm : Definir los css que se tratarán inicialmente
+    // TODO : 29-OCT-2022 9.04AM Hacer que funcione en Andriod los accsos de apis
+}
+<h1>Calendario Personal</h1>
+<div class="container-fluid h3" >
+Por ::
+    <span class="h2" style="cursor:pointer" @onclick="@(() => Cambio(MODE.Día))">Dia</span> -
+    <span class="h2" style="cursor:pointer" @onclick="@(() => Cambio(MODE.Mes))">Mes</span> - 
+    <span class="h2" style="cursor:pointer" @onclick="@(() => Cambio(MODE.Año))">Año</span>
+</div>
+@if (!String.IsNullOrEmpty(fecha))
+{
+    mode = MODE.Día;
+}
+@if (mode == MODE.Día)
+{
+    <DiaComponent fecha="@fecha" />
+}
+else if (mode == MODE.Mes)
+{
+    <MesComponent />
+}
+else if (mode == MODE.Año)
+{
+    <AnoComponent />
+}
+

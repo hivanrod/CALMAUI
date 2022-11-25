@@ -1,0 +1,85 @@
+﻿@inherits HistoricoCitasComponentBase
+@*@page "/repeticiones"
+*@
+<div class="col-sm-12 col-md-12 col-xl-12" @onclick="@(() => MuestraHistoria_citas(@ObjetoId,@TipoObjetoId))" style="cursor:pointer;">
+    <div class="float-md-none bg-dark  text-center text-light rounded-sm col-sm-12 col-md-12 col-xl-12 h2" >
+            <div class="col-sm-12 col-md-12 col-xl-12 text-center">
+            @if(Historia_citas) {
+                //HistoricoC = "0";
+                @("Historial Citas -" + @ObjetoId.ToString() + "- (" + HistoricoC + ")");
+                <span class="float-end text-right badge badge-dark">X</span>
+            }else{
+                if (historicoCitas != null)
+                {
+                    HistoricoC = historicoCitas.Count().ToString();
+                }
+                @("Ver Historial Citas (" + HistoricoC + ")");
+
+                <span class="float-end text-right badge badge-dark"></span>
+            }
+            </div>
+    </div>
+</div>
+
+
+@*// Historia citas
+*@
+    @if(@Historia_citas) {
+  <ul class="list-group">
+            <li class="list-group-item">
+                <div class="table table-hover">
+                    <div class="row">
+                        <div class="col-12 bg-dark text-light text-center">Historia Citas</div>
+
+                    </div>
+                </div> 
+                @if (historicoCitas != null)
+                {
+                    <div class="table table-bordered">
+
+                        @foreach (var item in historicoCitas)
+                        {
+                       <div class="card" style="position: relative; border: dotted; background-color: #b5b5b5; padding: 20px 20px 20px 20px; z-index:1000">
+
+                        <div class="table table-bordered">
+                              <div class="row">
+                                    <div class="col-12 bg-black text-light text-center">Cita</div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-control-plaintext col-6 text-center h3 text-light bg-secondary">@item.Descripcion</div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-6 bg-black text-light text-center">Fecha</div>
+                                    <div class="col-6 bg-black text-light text-center">Hora</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 text-center">@item.Fecha</div>
+                                    <div class="col-6 text-center">@Horas[@item.Hora]</div>
+                                </div>
+                                 <div class="row">
+                                    <div class="col-12 bg-black text-light text-center">Verificación:</div>
+                                </div>
+                               <div class="row">
+                                    <div class="col-12 hr text-center">@if (@item.Verificado) { @("Finalizada") }else{@("Por Terminar")}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 bg-black text-light text-center">Notas</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 hr text-center">@item.Notas</div>
+                                </div>
+                        </div>
+                    </div>
+
+                        }
+                    </div>
+                }
+            </li>
+        </ul>
+
+    
+
+
+
+} 

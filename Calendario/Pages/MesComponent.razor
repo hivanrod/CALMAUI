@@ -1,0 +1,178 @@
+﻿@inherits MesComponentBase
+<PageTitle>Mes - Calendario</PageTitle>
+<h3 class="h3 text-center" style="cursor:pointer" @onclick="@(() => loadCitasFecha(hoy))">Vista Mes - Mes Actual</h3>
+
+<div class="card">
+        <div class="card-header">
+        <div class="h2 text-center" >
+            <div class="float-start" style="cursor:pointer" @onclick="@(() => loadCitasFecha(fecha1))">@("<<")</div>
+            @Mes[mes].ToString() - @Convert.ToDateTime(fecha).Year.ToString()
+            <div class="float-end" style="cursor:pointer" @onclick="@(() => loadCitasFecha(fecha2))">@(">>")</div>    
+        </div>
+    </div>
+    <div class="row">
+         <div class="col-3 text-center">&nbsp;</div>
+                <div class="col-8 text-center h3">
+                <div class="row">
+                    <div class="col-1 text-center">L</div>
+                    <div class="col-1 text-center">M</div>
+                    <div class="col-1 text-center">M</div>
+                    <div class="col-1 text-center">J</div>
+                    <div class="col-1 text-center">V</div>
+                    <div class="col-1 text-center">S</div>
+                    <div class="col-1 text-center">D</div>
+                </div>
+                </div>
+         <div class="col-2 text-center">&nbsp;</div>
+     </div>
+
+    @{ dia = 1; }
+    @for (var semana = 1; semana <= 6; semana++)
+        {
+        if (semana == 1 )
+        {
+            <div class="row">
+                <div class="col-3 text-center">&nbsp;</div>
+                    <div class="col-8 text-center">
+                                <div class="row">
+                                        @for (var j = 1; j <= 7; j++)
+                                        {
+                                            @if (diasemanainicia > j)
+                                            {
+                                                <div class="col-1">&nbsp;</div>
+                                            }
+                                            else
+                                            {
+                                                @if (Convert.ToDateTime(DateTime.Now.Date) == Convert.ToDateTime(mes.ToString() + "/" + dia.ToString() + "/" + ano.ToString() ))
+                                                {
+                                                    <button style="border-radius:2px" class="bg-black text-light col-1 text-center text-nowrap">
+                                                        <strong>@dia</strong>
+                                                    </button>
+                                                }
+                                                else
+                                                {
+                                                    <button style="border-radius:2px" @onclick="@(() => Navigate("/?fecha="+ dia.ToString() + "/" + mes.ToString() + "/" + ano.ToString()))" class="border-dark col-1 text-center text-nowrap">
+                                                        <strong>@dia</strong>
+                                                    </button>
+                                                }
+                                                dia++;
+                                           }
+                                        
+                                        } 
+                                </div>
+                    </div>
+                    <div class="col-2 text-center">&nbsp;</div>
+            </div>
+        }
+        if (semana > 1 && semana < 5 && dia < 30)
+        {
+            <div class="row">
+                <div class="col-3 text-center">&nbsp;</div>
+                    <div class="col-8 text-center">
+                    <div class="row">
+                        @for (var j = 1; j <= 7; j++)
+                        {
+                            if (!String.IsNullOrEmpty(dia.ToString()))
+                            {
+                                @if (Convert.ToDateTime(DateTime.Now.Date) == Convert.ToDateTime(mes.ToString() + "/" + dia.ToString() + "/" + ano.ToString()))
+                                {
+                                    <button style="border-radius:2px" class="bg-black text-light col-1 text-center text-nowrap">
+                                        <strong>@dia</strong>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button style="border-radius:2px" class="border-dark col-1 text-center text-nowrap">
+                                        <strong>@dia</strong>
+                                    </button>
+                                }
+                                dia++;
+                            }
+                            else
+                            {
+                                <div class="col-1">&nbsp;</div>
+                            }
+                        }
+
+                    </div>
+                    </div>
+                <div class="col-2 text-center">&nbsp;</div>
+            </div>
+        }
+        if (semana >= 5 && dia <= 31)
+        {
+            <div class="row">
+                <div class="col-3 text-center">&nbsp;</div>
+                    <div class="col-8 text-center">
+                    <div class="row">
+                            @for (var j = 1; j <= 7; j++)
+                            {
+                                var f = (Convert.ToDateTime(fecha.ToString()).Month.ToString() 
+                                + "/" + dia.ToString()
+                                + "/" + Convert.ToDateTime(fecha.ToString()).Year.ToString());
+                                if (IsDateTime(f))
+                                    {
+                                    @if (Convert.ToDateTime(DateTime.Now.Date) == Convert.ToDateTime(mes.ToString() + "/" + dia.ToString() + "/" + ano.ToString()))
+                                    {
+                                        <button style="border-radius:2px" class="bg-black text-light col-1 text-center text-nowrap">
+                                            <strong>@dia</strong>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button style="border-radius:2px" class="border-dark col-1 text-center text-nowrap">
+                                            <strong>@dia</strong>
+                                        </button>
+                                    }
+                                    dia++;
+                                }
+                                else
+                                {
+                                    <div class="col-1 text-center">&nbsp;</div>
+                                }
+                            }
+                    </div>
+                    </div>
+                <div class="col-2 text-center">&nbsp;</div>
+            </div>
+
+        }
+        if (semana == 6 && dia <= 31)
+        {
+            <div class="row">
+                <div class="col-3 text-center">&nbsp;</div>
+                <div class="col-8 text-center">
+                    <div class="row">
+                        @for (var j = 1; j <= 7; j++)
+                        {
+                            var f = (Convert.ToDateTime(fecha.ToString()).Month.ToString()
+                            + "/" + dia.ToString()
+                            + "/" + Convert.ToDateTime(fecha.ToString()).Year.ToString());
+                            if (IsDateTime(f))
+                            {
+                                @if (Convert.ToDateTime(DateTime.Now.Date) == Convert.ToDateTime(mes.ToString() + "/" + dia.ToString() + "/" + ano.ToString()))
+                                {
+                                    <button style="border-radius:2px" class="bg-black text-light col-1 text-center text-nowrap">
+                                        <strong>@dia</strong>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button style="border-radius:2px" class="border-dark col-1 text-center text-nowrap">
+                                        <strong>@dia</strong>
+                                    </button>
+                                }
+                                dia++;
+                            }
+                            else
+                            {
+                                <div class="col-1 text-center">&nbsp;</div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="col-2 text-center">&nbsp;</div>
+            </div>
+        }
+    }
+  </div>

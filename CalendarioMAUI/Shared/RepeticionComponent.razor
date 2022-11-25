@@ -1,0 +1,273 @@
+﻿@inherits RepeticionComponentBase
+@*@page "/repeticiones"
+*@
+<div class="col-sm-12 col-md-12 col-xl-12" @onclick="@(() => MuestraRepeticiones(23))" style="cursor:pointer;">
+    <div class="float-md-none bg-dark  text-center text-light rounded-sm col-sm-12 col-md-12 col-xl-12 h2" >
+        <div class="col-sm-12 col-md-12 col-xl-12 text-center">
+        Nueva Repeticion
+        @if(Repite) {
+            <span class="float-end text-right badge badge-dark">X</span>
+    }</div>
+</div>
+</div>
+
+
+@if(@Repite) {
+        <EditForm  EditContext="RepeticionInsertContext" OnSubmit="@Insert">
+    <DataAnnotationsValidator />
+          <table class="col-sm-12 col-md-12 col-xl-12">
+                <tr>
+                    <th class="col-xl-6 col-md-6 col-sm-6 text-center">Desde</th>
+                    <th class="col-xl-6 col-md-6 col-sm-6 text-center">Hasta</th>
+                </tr>
+                    <tr>
+                        <td class="col-xl-6 col-md-6 col-sm-6">
+                            <InputDate id="FechaInicio" class="form-control" placeholder="FechaHora" @bind-Value="@repeticionI.FechaInicio">
+                                </InputDate>
+                            <InputSelect class="form-control" @bind-Value="@repeticionI.HoraInicio">
+                                <option>--Seleccione Hora Inicia--</option>
+                                @for (var i = 0; i < Horas.Count; i++)
+                                    {
+                                        if (i == repeticionI.HoraInicio) 
+                                        {
+                                            <option selected value="@i">@Horas[i].ToString()</option>
+                                        }
+                                        else { 
+                                            <option value="@i">@Horas[i].ToString()</option>
+                                        }
+                                    }
+                            </InputSelect>
+                            <ValidationMessage For="@(()=>repeticionI.HoraInicio)" />
+                        </td>
+                        <td class="col-xl-6 col-md-6 col-sm-6">
+                                <InputDate id="FechaFinaliza" class="form-control" placeholder="FechaHora" 
+                                @bind-Value="@repeticionI.FechaFinaliza">
+                                </InputDate>
+                                <InputSelect class="form-control" @bind-Value="@repeticionI.HoraFinaliza">
+                                    <option>--Seleccione Hora Finaliza--</option>
+                                    @for (var i = 0; i < Horas.Count; i++)
+                                        {
+                                            if (i == repeticionI.HoraFinaliza) 
+                                            {
+                                                <option selected value="@i">@Horas[i].ToString()</option>
+                                            }
+                                            else { 
+                                                <option value="@i">@Horas[i].ToString()</option>
+                                            }
+                                        }
+                                </InputSelect>
+                                <ValidationMessage For="@(()=>repeticionI.HoraFinaliza)" />
+@*                                        <InputText hidden placeholder="UserId" @bind-Value="@Tarea1.UserId" class="form-control" />
+                                <InputNumber hidden placeholder="ContactoId" @bind-Value="@Tarea1.ContactoId" class="form-control" />
+*@
+                    </td>
+                </tr>
+            </table>
+
+                    <table class="col-sm-12 col-md-12 col-xl-12">
+                         <tr class="col-sm-12 col-md-12 col-xl-12">
+                            <td class="col-sm-12 col-md-12 col-xl-12">
+                                <InputSelect class="form-control" placeholder="Tipo Objeto" @bind-Value="@repeticionI.IdTipoObjeto">
+                                    <option>--Seleccione Tipo Objeto--</option>
+                                    @if(tipoObjetos != null) {
+                                        @foreach (var item in tipoObjetos)
+                                            {
+                                                if (item.Id == repeticionI.IdTipoObjeto) 
+                                                {
+                                                    <option selected value="@item.Id">@item.Descripcion.ToString()</option>
+                                                }
+                                                else { 
+                                                    <option value="@item.Id">@item.Descripcion.ToString()</option>
+                                                }
+                                            }
+                                    }
+                                </InputSelect>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="col-sm-12 col-md-12 col-xl-12">
+                         <tr class="col-sm-12 col-md-12 col-xl-12">
+                            <td class="col-sm-12 col-md-12 col-xl-12">
+                                <InputSelect class="form-control" placeholder="Tipo Objeto" @bind-Value="@repeticionI.TiposRepeticionId">
+                                    <option value="">--Seleccione Frecuencia--</option>
+                                    @if (tipoRepeticiones != null)
+                                        {
+
+                                            @foreach (var item in tipoRepeticiones)
+
+                                            {
+                                                if (item.Id == repeticionI.TiposRepeticionId)
+                                                {
+                                                <option selected value="@item.Id">@item.Descripcion.ToString()</option>
+                                                }
+                                                else
+                                                {
+                                                <option value="@item.Id">@item.Descripcion.ToString()</option>
+                                                }
+                                            }
+                                        }
+                                </InputSelect>
+                                <InputNumber hidden placholder="IdObjeto" id="IdObjeto" @bind-Value="@repeticionI.IdObjeto" class="form-control"></InputNumber>
+                                <InputNumber hidden placholder="Tema" id="TemaId" @bind-Value="@repeticionI.TemaId" class="form-control"></InputNumber>
+                            </td>
+                        </tr>
+                    </table>
+
+@*                    <table class="col-sm-12 col-md-12 col-xl-12">
+                         <tr class="col-sm-12 col-md-12 col-xl-12">
+                            <td class="col-sm-12 col-md-12 col-xl-12">
+                                <InputSelect class="form-control" placeholder="Tipo Objeto" @bind-Value="@repeticionI.IdTipoRepeticion">
+                                    <option value="">--Seleccione Tipo Repeticiones--</option>
+                                    @foreach (var item in tipoRepeticiones)
+
+                                        {
+                                            if (item.Id == repeticionI.IdTipoRepeticion) 
+                                            {
+                                                <option selected value="@item.Id">@item.Descripcion.ToString()</option>
+                                            }
+                                            else { 
+                                                <option value="@item.Id">@item.Descripcion.ToString()</option>
+                                            }
+                                        }
+                                </InputSelect>
+                            </td>
+                        </tr>
+                    </table>
+
+*@                    <table class="col-sm-12 col-md-12 col-xl-12">
+                         <tr class="col-sm-12 col-md-12 col-xl-12">
+                            <td class="col-sm-12 col-md-12 col-xl-12">
+                                <InputTextArea placeholder="Notas" @bind-Value="@repeticionI.Notas" class="form-control" />
+                                    <ValidationMessage For="@(()=>repeticionI.Notas)" />
+                            </td>
+                         </tr>
+                          <tr>
+                            <td >
+                                <button type="submit" class="btn btn-info form-control">Adicionar Repeticion</button>
+                            </td>
+                        </tr>
+                     </table>
+
+
+                  </EditForm>
+
+
+}
+<div class="col-sm-12 col-md-12 col-xl-12" @onclick="@(() => MuestraHistoria(@ObjetoId,@TipoObjetoId))" style="cursor:pointer;">
+    <div class="float-md-none bg-dark  text-center text-light rounded-sm col-sm-12 col-md-12 col-xl-12 h2" >
+            <div class="col-sm-12 col-md-12 col-xl-12 text-center">
+            @if(Historia) {
+                @("Historial Repeticiones");
+                <span class="float-end text-right badge badge-dark">X</span>
+            }else{
+                @("Ver Historial Repeticiones");
+                <span class="float-end text-right badge badge-dark"></span>
+            }
+            </div>
+    </div>
+</div>
+    @if(@Historia) {
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="table table-hover">
+                    <div class="row">
+                        <div class="col-12 bg-dark text-light">Citas </div>
+
+                    </div>
+                </div>
+                @if (repeticionesCitas != null)
+                {
+                    <div class="table table-bordered">
+                        <div class="row-cols-12">
+                            <div class="col-12 hr"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 hr">Repeticiones Citas</div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">Fecha Inicio</div>
+                            <div class="col-6">Fecha Finaliza</div>
+                        </div>
+                        @foreach (var item in repeticionesCitas)
+                        {
+                            <div class="row">
+                                <div class="col-6 hr">Repeticiones Periodo</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 hr">@item.RepeticionesPeriodo</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">@item.FechaInicio</div>
+                                <div class="col-6">@item.FechaFinaliza</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 hr">Descripcions</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 hr">@item.Notas</div>
+                            </div>
+                        }
+                    </div>
+                }
+            </li>
+        </ul>
+
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="table table-hover">
+                    <div class="row bg-dark text-light">
+                        <div class="col-12 bg-dark text-light">Tareas</div>
+
+                    </div>
+                </div>
+                    @if(repeticionesTareas != null)
+                        {
+                        <div class="table table-bordered">
+                            <div class="row-cols-12">
+                                <div class="col-12 hr"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 hr">Repeticiones Tareas</div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">Fecha Inicio</div>
+                                <div class="col-6">Fecha Finaliza</div>
+                            </div>
+                        @foreach(var item in repeticionesTareas)
+                        {
+                            <div class="row">
+                                <div class="col-12 hr">Repeticiones Periodo</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 hr">@item.RepeticionesPeriodo</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6">@item.FechaInicio</div>
+                                <div class="col-6">@item.FechaFinaliza</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 hr">Descripcions</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 hr">@item.Notas</div>
+
+                            </div>
+
+                        }
+
+                </div>
+                }       
+            </li> 
+        </ul>
+    
+    
+
+
+
+} 

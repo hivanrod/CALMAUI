@@ -4,7 +4,9 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CALMAUI", "CALMAUI\CALMAUI.csproj", "{B9EFCBCF-CF6A-4A73-A02E-A6E2B586D58B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalCore23", "CalCore23\CalCore23.csproj", "{FC76B613-A8F7-4684-9173-147DD4B769DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendario2", "Calendario2\Calendario2.csproj", "{CF05D6DB-FEB7-4379-94A4-88F018D03462}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarioMAUI", "CalendarioMAUI\CalendarioMAUI.csproj", "{1D5BD8EC-C93A-403B-9B0E-88E0EF9763BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,10 +20,16 @@ Global
 		{B9EFCBCF-CF6A-4A73-A02E-A6E2B586D58B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9EFCBCF-CF6A-4A73-A02E-A6E2B586D58B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B9EFCBCF-CF6A-4A73-A02E-A6E2B586D58B}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{FC76B613-A8F7-4684-9173-147DD4B769DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC76B613-A8F7-4684-9173-147DD4B769DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC76B613-A8F7-4684-9173-147DD4B769DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC76B613-A8F7-4684-9173-147DD4B769DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF05D6DB-FEB7-4379-94A4-88F018D03462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF05D6DB-FEB7-4379-94A4-88F018D03462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF05D6DB-FEB7-4379-94A4-88F018D03462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF05D6DB-FEB7-4379-94A4-88F018D03462}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D5BD8EC-C93A-403B-9B0E-88E0EF9763BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D5BD8EC-C93A-403B-9B0E-88E0EF9763BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D5BD8EC-C93A-403B-9B0E-88E0EF9763BE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1D5BD8EC-C93A-403B-9B0E-88E0EF9763BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D5BD8EC-C93A-403B-9B0E-88E0EF9763BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D5BD8EC-C93A-403B-9B0E-88E0EF9763BE}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
