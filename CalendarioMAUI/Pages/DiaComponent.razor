@@ -59,8 +59,7 @@
                     h = Convert.ToInt16(nhora[0].ToString());
                     //if (tarde != null && h < 7 && tarde == "00AM")
                     if (tarde != null)
-                        {
-                        
+                    {
                         if (h > 12)
                         {
                             h -= 12;
@@ -71,6 +70,11 @@
                             ClassFocus = "elemetnToFocus";
                         }
                     }
+                }
+                if ((horaactual > 18 && hora.ToString() == "NOCHE") || (horaactual < 7 && hora.ToString() == "MADRUGADA")) // MADRUGADA O NOCHE
+                {
+                    ClassHora = "bg-secondary text-white rounded";
+                    ClassFocus = "elemetnToFocus";
                 }
                 <tr>
                 <td style="width:max-content;">
