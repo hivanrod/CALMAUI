@@ -1,4 +1,4 @@
-﻿@page "/dia/{fecha?}"
+﻿@page "/dia/{Fecha?}"
 @inherits DiaComponentBase
 
 <PageTitle>Dia - Calendario</PageTitle>
@@ -74,7 +74,7 @@
                 }
                 <tr>
                 <td style="width:max-content;">
-                        <div class="@ClassHora container-fluid w-auto" @ref="elementToFocus">
+                        <div class="@ClassHora container-fluid w-auto" @ref="@elementToFocus">
                             @if (ClassHora.Length > 0)
                             {
                                 //<input hidden @ref="elementToFocus" autofocus style="z-index=-1000"/>

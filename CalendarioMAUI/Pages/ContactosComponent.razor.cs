@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
-using CalendarioMAUI.Models;
+using ClasesMAUI.Models;
 using CalendarioMAUI.Services;
 
 namespace CalendarioMAUI.Pages

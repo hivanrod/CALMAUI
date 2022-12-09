@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using CalendarioMAUI.Services;
-using CalendarioMAUI.Models;
+using ClasesMAUI.Models;
 // HECHO : 29-12-2021 2.05am : Las otras partes de CRUD :
 // HECHO : 29-12-2021 3.10am : Inserción de forma automatica de validación :
 // HECHO : 01-ENE-2022 : 11.42Pm : Ya se ve interfase : Se están haciendo las validaciones de forma para insertar prioridad : 

@@ -5,7 +5,7 @@ namespace CalendarioMAUI.Pages
     public class IndexBase : ComponentBase
     {
         [Parameter]
-        public string fecha { get; set; }
+        public string? Fecha { get; set; } = "";
         [Parameter]
         public string hoy { get; set; }
         public enum MODE { Día, Mes, Año };
@@ -19,6 +19,11 @@ namespace CalendarioMAUI.Pages
             //hoy = DateTime.Now.ToString();
             ////await load();
             //temas = await temasServices.GetTemasAsync();
+            if(!String.IsNullOrEmpty(Fecha))
+            {
+                mode = MODE.Día;
+            }
+
         }
 
         public async Task Cambio(MODE mODE)

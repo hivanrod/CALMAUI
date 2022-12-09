@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using CalendarioMAUI.Services;
-using CalendarioMAUI.Models;
+using ClasesMAUI.Models;
 
 namespace CalendarioMAUI.Pages
 {
@@ -37,6 +37,8 @@ namespace CalendarioMAUI.Pages
         public int dia { get; set; }
         [Parameter]
         public int ano { get; set; }
+        [SupplyParameterFromQuery]
+        public string Filter { get; set; }
         public int diasemanainicia { get; set; }
         public int diasemanatermina { get; set; }
         public List<string> Mes = new List<string>(new string[] { "", "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE" });
@@ -103,6 +105,38 @@ namespace CalendarioMAUI.Pages
         }
 
 
+        public async Task Filtro(string id, string Filtro)
+        {
+            Filter = Filtro;
+            //boltodas = false;
+            //switch (Filter)
+            //{
+            //    case else : 
+
+            //                break;
+            //}
+            if (!string.IsNullOrEmpty(id))
+            {
+                //tareas = await tareasServices.GettareasTemaAsync(id);
+                //boltodas = true;
+                navigation.NavigateTo("/Fecha="+ id.ToString());
+            }
+            //else
+            //{
+            //    tareas = await tareasServices.GetTareasAsync();
+            //}
+            //navigationManager.GetUriWithQueryParameters(
+            //    new Dictionary<string,object>
+            //    {
+            //        ["prioid"] = id
+            //    }
+            //);
+
+            //PrioridadEditContext = new EditContext(Prio2);
+
+            ////Xcursor(id);
+            //  mode = MODE.List;
+        }
 
         public async Task loadCitasFecha(string fecha, int? page = 1, int? quantityPerPage = 1, string UsuarioId = "err56yh")
         {

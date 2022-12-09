@@ -9,8 +9,8 @@ namespace Calendario2.Services
         //string baseUrl = "https://localhost:7119/";
         //string baseUrl = "http://localhost:5093/";
         //string baseUrl = "http://apicalCore/";
-        string baseUrl = "http://192.168.5.105:8090/";
-        //        baseUrl = "http://25.82.219.42/"; 
+        //string baseUrl = "http://192.168.5.105:8090/";
+        string baseUrl = "http://25.82.219.42:8090/";
         public async Task<Cita[]> GetCitasAsync()
         {
             HttpClient http = new HttpClient();

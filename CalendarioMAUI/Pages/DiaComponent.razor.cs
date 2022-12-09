@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using CalendarioMAUI.Services;
-using CalendarioMAUI.Models;
+using ClasesMAUI.Models;
 
 namespace CalendarioMAUI.Pages
 {
@@ -27,6 +27,12 @@ namespace CalendarioMAUI.Pages
         [Parameter]
         public string ClassFocus { get; set; } = "";
         [Parameter]
+        public string fecha { get; set; }
+        [Parameter]
+        public string fecha1 { get; set; }
+        [Parameter]
+        public string fecha2 { get; set; }
+        [Parameter]
         public string hoy { get; set; }
         [Parameter]
         public string tarde { get; set; }
@@ -41,15 +47,7 @@ namespace CalendarioMAUI.Pages
         [Parameter]
         public int horaaplica { get; set; }
         [Parameter]
-        public string fecha { get; set; }
-        [Parameter]
-        public string fecha1 { get; set; }
-        [Parameter]
-        public string fecha2 { get; set; }
-        [Parameter]
         public bool bolcrea { get; set; } = false;
-
-
         [Parameter]
         public string dialargo { get; set; } = DateTime.Now.ToLongDateString();
         [Parameter]
@@ -58,6 +56,10 @@ namespace CalendarioMAUI.Pages
         protected ElementReference elementToFocus;
         //[Parameter]
         //public Int16 horas { get; set; } =
+
+        [SupplyParameterFromQuery]
+        public string Fecha { get; set; }
+
 
         public enum MODE { Día, Mes, Año };
         public MODE mode = MODE.Día;
@@ -88,7 +90,12 @@ namespace CalendarioMAUI.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            await load(DateTime.Now.ToShortDateString());
+            if (!String.IsNullOrEmpty(Fecha))
+                fecha = Fecha;
+            else
+                fecha = DateTime.Now.ToShortDateString();
+ 
+            await load(fecha);
             hoy = DateTime.Now.ToString();
             //await load();
             temas = await temasServices.GetTemasAsync();
@@ -98,6 +105,12 @@ namespace CalendarioMAUI.Pages
 
         public async Task load(string fecha, int page = 1, int quantityPerPage = 1, string UsuarioId = "err56yh")
         {
+            if (!String.IsNullOrEmpty(Fecha)) { 
+                fecha = Convert.ToDateTime(Convert.ToDateTime(Fecha).ToString()).Year.ToString() + "-" +
+                   Convert.ToDateTime(Convert.ToDateTime(Fecha).ToString()).Month.ToString() + "-" +
+                   Convert.ToDateTime(Convert.ToDateTime(Fecha).ToString()).Day.ToString();
+
+            }
             this.fecha = fecha;
 
             if (!string.IsNullOrEmpty(fecha))
@@ -110,15 +123,6 @@ namespace CalendarioMAUI.Pages
                     Convert.ToDateTime(Convert.ToDateTime(fecha).AddDays(1).ToString()).Month.ToString() + "-" +
                     Convert.ToDateTime(Convert.ToDateTime(fecha).AddDays(1).ToString()).Day.ToString();
 
-                //FECHAS MAUI
-                //fecha1 = "10/22/2022";
-                //Convert.ToDateTime(Convert.ToDateTime(fecha).AddDays(-1).ToString()).Month.ToString() + "/" +
-                //Convert.ToDateTime(Convert.ToDateTime(fecha).AddDays(-1).ToString()).Day.ToString() + "/" +
-                //Convert.ToDateTime(Convert.ToDateTime(fecha).AddDays(-1).ToString()).Year.ToString();
-                //fecha2 = "10/24/2022";
-                //Convert.ToDateTime(Convert.ToDateTime(fecha).AddDays(1).ToString()).Month.ToString() + "/" +
-                //Convert.ToDateTime(Convert.ToDateTime(fecha).AddDays(1).ToString()).Day.ToString() + "/" +
-                //Convert.ToDateTime(Convert.ToDateTime(fecha).AddDays(1).ToString()).Year.ToString();
                 var citas2 = await citasServices.GetCitasAsync();
                 citas = await citasServices.GetCitasFechaAsync(fecha);
                 //var fecha1 = Convert.ToDateTime(fecha).Date;

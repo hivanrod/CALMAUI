@@ -1,16 +1,26 @@
 ﻿using Newtonsoft.Json;
 using System.Text;
 using Calendario2.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace Calendario2.Services
 {
+
     public class TemasServices
     {
+        private readonly IConfiguration _configuration;
+        public TemasServices(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+        //builder.
         //string baseUrl = "https://localhost:7119/";
         //string baseUrl = "http://apicalCore/";
         //string baseUrl = "http://192.168.5.105:8090/";
-        string baseUrl = "http://192.168.5.105:8090/";
-
+        //string baseUrl = "http://192.168.5.105:8090/";
+        string baseUrl = "http://25.82.219.42:8090/";
+        //string baseUrl = CalendarioMAUI.Data.APIURL;
+        //string baseUrl = _configuration.GetSection("apiurl:dataserver").Value.ToString();
         public async Task<Tema[]> GetTemasAsync()
         {
             HttpClient http = new HttpClient();

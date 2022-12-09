@@ -1,4 +1,4 @@
-﻿@page "/{fecha?}"
+﻿@page "/{Fecha?}"
 @inherits IndexBase
 
 <PageTitle>Calendario</PageTitle>
@@ -14,17 +14,13 @@ Por ::
     <span class="h2" style="cursor:pointer" @onclick="@(() => Cambio(MODE.Mes))">Mes</span> - 
     <span class="h2" style="cursor:pointer" @onclick="@(() => Cambio(MODE.Año))">Año</span>
 </div>
-@if (!String.IsNullOrEmpty(fecha))
-{
-    mode = MODE.Día;
-}
 @if (mode == MODE.Día)
 {
-    <DiaComponent fecha="@fecha" />
+        <DiaComponent fecha="@Fecha" />
 }
 else if (mode == MODE.Mes)
 {
-    <MesComponent fecha="@fecha" />
+    <MesComponent fecha="@Fecha" />
 }
 else if (mode == MODE.Año)
 {

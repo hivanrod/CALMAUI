@@ -1,4 +1,4 @@
-﻿using CalendarioMAUI.Models;
+﻿using ClasesMAUI.Models;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -9,7 +9,8 @@ namespace CalendarioMAUI.Services
         //string baseUrl = "https://localhost:7119/";
         //string baseUrl = "http://apicalCore/";
         //string baseUrl = "http://192.168.5.105:8090/";
-        string baseUrl = "http://192.168.5.105:8090/";
+        //string baseUrl = "http://192.168.5.105:8090/";
+        string baseUrl = "http://25.82.219.42:8090/";
 
         public async Task<Tarea[]> GetTareasAsync()
         {

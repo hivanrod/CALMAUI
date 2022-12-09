@@ -1,4 +1,7 @@
 {
+  "apiurl": {
+    "dataserver": "http://25.82.219.42:8090/"
+  },
   "profiles": {
     "Windows Machine": {
       "commandName": "MsixPackage",

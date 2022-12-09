@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using System.Linq;
 using System.Data;
 using CalendarioMAUI.Services;
-using CalendarioMAUI.Models;
+using ClasesMAUI.Models;
 
 namespace CalendarioMAUI.Pages
 {

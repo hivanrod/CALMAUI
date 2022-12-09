@@ -51,7 +51,11 @@
                                                 }
                                                 else
                                                 {
-                                                    <button style="border-radius:2px" @onclick="@(() => Navigate("/?fecha="+ ano.ToString() + "-" + mes.ToString() + "-" + dia.ToString()))" class="border-dark col-1 text-center text-nowrap">
+                                                <button style="border-radius:2px" class="border-dark col-1 text-center text-nowrap"
+                                                    @onclick="@(() => Filtro(ano.ToString() + 
+                                                    "-" + mes.ToString() + "-" + dia.ToString(),
+                                                    Filter
+                                                    ))">  
                                                         <strong>@dia</strong>
                                                     </button>
                                                 }

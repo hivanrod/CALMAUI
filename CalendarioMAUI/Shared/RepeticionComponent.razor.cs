@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using CalendarioMAUI.Services;
-using CalendarioMAUI.Models;
+using ClasesMAUI.Models;
 
 namespace CalendarioMAUI.Shared
 {
