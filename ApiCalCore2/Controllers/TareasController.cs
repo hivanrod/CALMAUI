@@ -99,6 +99,39 @@ namespace ApiCalCore2.Controllers
             }
         }
 
+        // GET: api/Tareas/FechaMes/{fecha}
+        [HttpGet("FechaMes/{fecha}")]
+        public async Task<ActionResult<IEnumerable<Tarea>>> GetTareasFechaMes(string fecha)
+        {
+            if (fecha == null)
+            {
+                throw new ArgumentNullException(nameof(fecha));
+            }
+            else
+            {
+                var fechaE = Convert.ToDateTime(fecha.Replace("'", "")).Date;
+
+
+                var fecha1 = Convert.ToDateTime(Convert.ToDateTime(fechaE).ToString()).Year.ToString() + "-" +
+                   Convert.ToDateTime(Convert.ToDateTime(fechaE).ToString()).Month.ToString() + "-01";
+                var fecha2 = Convert.ToDateTime(Convert.ToDateTime(fechaE).ToString()).Year.ToString() + "-" +
+                   Convert.ToDateTime(Convert.ToDateTime(fechaE).ToString()).AddMonths(1).ToString() + "-01";
+                fecha2 = Convert.ToDateTime(Convert.ToDateTime(fechaE).ToString()).AddDays(-1).ToString();
+
+                //var fecha1 = Convert.ToDateTime(fecha;
+                //var fecha3 = fecha2.AddDays(1);
+                var tareas2 = await _context.Tarea.Where(x => x.FechaInicio >= Convert.ToDateTime(fecha1) && x.FechaFinaliza <= Convert.ToDateTime(fecha2)).OrderBy(x => x.Verificado).ThenBy(x => x.TemaId).ThenBy(x => x.FechaInicio).ToListAsync();
+                var tareas = tareas2;
+                //var cita = await _context.Cita.ToListAsync();
+
+                if (tareas != null)
+                {
+                    return tareas;
+                }
+                return tareas;
+            }
+        }
+
 
 
 

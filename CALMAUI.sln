@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiCalCore2", "ApiCalCore2\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiCal3", "ApiCal3\ApiCal3.csproj", "{F917DB3D-ED98-4EDA-B00E-E949896961AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiCalNS", "ApiCalNS\ApiCalNS.csproj", "{EB6BE9E8-2ABD-465C-87DA-A09DFE5B544C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +76,14 @@ Global
 		{F917DB3D-ED98-4EDA-B00E-E949896961AF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F917DB3D-ED98-4EDA-B00E-E949896961AF}.Release|x64.ActiveCfg = Release|Any CPU
 		{F917DB3D-ED98-4EDA-B00E-E949896961AF}.Release|x64.Build.0 = Release|Any CPU
+		{EB6BE9E8-2ABD-465C-87DA-A09DFE5B544C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB6BE9E8-2ABD-465C-87DA-A09DFE5B544C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB6BE9E8-2ABD-465C-87DA-A09DFE5B544C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EB6BE9E8-2ABD-465C-87DA-A09DFE5B544C}.Debug|x64.Build.0 = Debug|Any CPU
+		{EB6BE9E8-2ABD-465C-87DA-A09DFE5B544C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB6BE9E8-2ABD-465C-87DA-A09DFE5B544C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB6BE9E8-2ABD-465C-87DA-A09DFE5B544C}.Release|x64.ActiveCfg = Release|Any CPU
+		{EB6BE9E8-2ABD-465C-87DA-A09DFE5B544C}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

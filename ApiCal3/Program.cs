@@ -15,31 +15,55 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddScoped<IUserService, UserService>();
+//builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSwaggerGen(options => {
-    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
-    {
-        Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
-        In = ParameterLocation.Header,
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
-    });
+//builder.Services.AddSwaggerGen(options => {
+//    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+//    {
+//        Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+//        In = ParameterLocation.Header,
+//        Name = "Authorization",
+//        Type = SecuritySchemeType.ApiKey
+//    });
 
-    options.OperationFilter<SecurityRequirementsOperationFilter>();
+//    options.OperationFilter<SecurityRequirementsOperationFilter>();
+//});
+builder.Services.AddSwaggerGen();
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(options =>
+//    {
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateIssuerSigningKey = true,
+//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+//                .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+//            ValidateIssuer = false,
+//            ValidateAudience = false
+//        };
+//    });
+
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+// Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      builder =>
+                      {
+                          //builder.WithOrigins("https://localhost:7296",
+                          //                    "https://localhost:7119",
+                          //                    "https://localhost:7080",
+                          //                    "https://calendario",
+                          //                    "http://calendario",
+                          //                    "https://apicalcore",
+                          //                    "http://apicalcore",
+                          //                    "https://calendario:443");
+                          builder
+                                                  .AllowAnyHeader()
+                                                  .AllowAnyMethod()
+                                                  .AllowAnyOrigin();
+                      });
 });
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
-            ValidateIssuer = false,
-            ValidateAudience = false
-        };
-    });
+
 
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -56,9 +80,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 

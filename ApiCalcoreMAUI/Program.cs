@@ -1,5 +1,6 @@
 //global using ApiCalCore2.Services.UserService;
 using ApiCalcoreMAUI.Data;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -41,7 +42,6 @@ builder.Services.AddCors(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
-
 
 
 

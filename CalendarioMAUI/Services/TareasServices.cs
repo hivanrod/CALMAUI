@@ -53,6 +53,15 @@ namespace CalendarioMAUI.Services
             var json = await http.GetStringAsync($"{baseUrl}api/Tareas/Fecha/{ano}-{mes}-{dia}");
             return JsonConvert.DeserializeObject<Tarea[]>(json);
         }
+        public async Task<Tarea[]> GetTareasFechaMesAsync(string fecha)
+        {
+            var ano = Convert.ToDateTime(fecha).Year;
+            var mes = Convert.ToDateTime(fecha).Month;
+            var dia = Convert.ToDateTime(fecha).Day;
+            HttpClient http = new HttpClient();
+            var json = await http.GetStringAsync($"{baseUrl}api/Tareas/Fecha/{ano}-{mes}-{dia}");
+            return JsonConvert.DeserializeObject<Tarea[]>(json);
+        }
 
         public async Task<HttpResponseMessage> InsertTareasAsync(Tarea Tarea)
         {

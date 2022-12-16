@@ -193,6 +193,20 @@
                  </InputSelectNumber>
                  </td>
                 </tr>
+                 <tr><td  class="col-sm-12 col-md-12 col-lg-12">
+
+                        <InputSelectNumber placeholder="IdTareaPadre" class="form-control"
+                                       Id="IdTareaPadre"
+                    @bind-Value="@Tarea1.IdTareaPadre"
+                  >
+                  <option value="">--Seleccione Tarea Padre--</option>
+                      @foreach (var item in tareas)
+                     {
+                        if (item.Id == Tarea1.IdTareaPadre) { <option selected value="@item.Id">@item.Descripcion</option> } else { <option value="@item.Id">@item.Descripcion</option> }
+                     }
+                 </InputSelectNumber>
+                 </td>
+                </tr>
                 <tr>
                 <td>
                   <InputSelectNumber placeholder="CitaId"  class="form-control" Id="CitaId" @bind-Value="@Tarea1.CitaId" >

@@ -2,7 +2,8 @@
 @inherits DiaComponentBase
 
 <PageTitle>Dia - Calendario</PageTitle>
-<h3 class="h3 text-center" style="cursor:pointer" @onclick="@(() => loadCitasFecha(hoy))">Vista Diaria - Hoy</h3>
+<h3 class="h3 text-center" style="cursor:pointer" @onclick="@(() => loadCitasFecha(hoy))">Vista Diaria - Hoy - 
+    <strong>@citashoy - Tareas(@tareastotal.ToString())</strong></h3>
 
 @{
     // HECHO : Se pusieron las columnas en títulos y se estan signando a los bucles. 8-nov-2022.

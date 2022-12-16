@@ -47,6 +47,12 @@ namespace CalendarioMAUI.Pages
         [Parameter]
         public int horaaplica { get; set; }
         [Parameter]
+        public int tareastotal { get; set; }
+        [Parameter]
+        public int citastotal { get; set; }
+        [Parameter]
+        public string citashoy { get; set; } = "NO HAY CITAS";
+        [Parameter]
         public bool bolcrea { get; set; } = false;
         [Parameter]
         public string dialargo { get; set; } = DateTime.Now.ToLongDateString();
@@ -66,7 +72,7 @@ namespace CalendarioMAUI.Pages
         [Parameter]
         public int i { get; set; } = 0;
         [Parameter]
-        public int i2 { get; set; } = 0;
+        public int i2 { get; set; } = -1;
         [Parameter]
         public List<string> Horas { get; set; } = new(new string[] { "MADRUGADA", "7:00AM", "8:00AM", "9:00AM", "10:00AM", "11:00AM", "12:00M", "1:00PM", "2:00PM", "3:00PM", "4:00PM", "5:00PM", "6:00PM", "NOCHE" });
         [Parameter]
@@ -100,6 +106,9 @@ namespace CalendarioMAUI.Pages
             //await load();
             temas = await temasServices.GetTemasAsync();
             await elementToFocus.FocusAsync();
+            if(citastotal > 0)
+             citashoy = "Citas(" + citastotal.ToString() + ")";
+
 
         }
 
@@ -123,16 +132,38 @@ namespace CalendarioMAUI.Pages
                     Convert.ToDateTime(Convert.ToDateTime(fecha).AddDays(1).ToString()).Month.ToString() + "-" +
                     Convert.ToDateTime(Convert.ToDateTime(fecha).AddDays(1).ToString()).Day.ToString();
 
-                var citas2 = await citasServices.GetCitasAsync();
+                //var citas2 = await citasServices.GetCitasAsync();
                 citas = await citasServices.GetCitasFechaAsync(fecha);
+                citastotal = citas.Length;
                 //var fecha1 = Convert.ToDateTime(fecha).Date;
                 //citas = citas2.Where(x => x.FechaHora.Value.Date == fecha1);
                 tareas = await tareasServices.GetTareasFechaAsync(fecha);
+                tareastotal= tareas.Length;
+                if (citastotal > 0)
+                {
+                    citashoy = "Citas(" + citastotal.ToString() + ")";
+                }
+                else
+                {
+                    citashoy = "NO HAY CITAS";
+                }
+
             }
             else
             {
                 citas = await citasServices.GetCitasAsync();
                 tareastodas = await tareasServices.GetTareasAsync();
+                citastotal = citas.Length;
+                tareastotal = tareas.Length;
+                if (citastotal > 0)
+                {
+                    citashoy = "Citas(" + citastotal.ToString() + ")";
+                }
+                else
+                {
+                    citashoy = "NO HAY CITAS";
+                }
+
             }
             //citas = await citasServices.GetCitasFechaAsync(fecha);
             //PrioridadContext = new EditContext(Prio);
@@ -153,15 +184,36 @@ namespace CalendarioMAUI.Pages
                 // var citas2 = await citasServices.GetCitasAsync();
                 citas = await citasServices.GetCitasFechaAsync(fecha);
                 dialargo = Convert.ToDateTime(fecha).ToLongDateString();
+                citastotal = citas.Length;
+
                 //var fecha1 = Convert.ToDateTime(fecha).Date;
                 //citas = citas2.Where(x => x.FechaHora.Value.Date == fecha1);
                 tareas = await tareasServices.GetTareasFechaAsync(fecha);
-
+                tareastotal = tareas.Length;
+                if (citastotal > 0)
+                {
+                    citashoy = "Citas(" + citastotal.ToString() + ")";
+                }
+                else
+                {
+                    citashoy = "NO HAY CITAS";
+                }
             }
             else
             {
                 citas = await citasServices.GetCitasAsync();
                 tareastodas = await tareasServices.GetTareasAsync();
+                citastotal = citas.Length;
+                tareastotal = tareas.Length;
+                if (citastotal > 0)
+                {
+                    citashoy = "Citas(" + citastotal.ToString() + ")";
+                }
+                else
+                {
+                    citashoy = "NO HAY CITAS";
+                }
+
 
                 //tareasServices = 
             }
